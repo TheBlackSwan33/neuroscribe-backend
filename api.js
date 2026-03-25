@@ -1,6 +1,6 @@
 // ===== API CLIENT pour MongoDB =====
 
-const API_BASE = 'https://neuroscribe-backend.onrender.com/api';
+const API_BASE = 'http://localhost:3000/api';
 
 // Récupérer tous les bilans
 async function getAllBilans() {
