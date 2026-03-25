@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroScribe - Archives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3d3d5c;
+      --paper: #faf8f4;
+      --accent: #2d6a4f;
+      --accent-light: #52b788;
+      --accent-pale: #d8f3dc;
+      --danger: #c0392b;
+      --shadow: 0 2px 12px rgba(26, 26, 46, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: linear-gradient(135deg, #e8e4dc 0%, #f0ebe8 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--ink);
+      color: white;
+      padding: 24px 40px;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header h1 span {
+      color: var(--accent-light);
+    }
+
+    header p {
+      font-size: 14px;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .archives-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .archives-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .back-btn {
+      padding: 10px 20px;
+      background: white;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: var(--accent-pale);
+    }
+
+    .archives-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .archive-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .archive-card:hover {
+      box-shadow: 0 8px 24px rgba(26, 26, 46, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .archive-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .archive-date {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .archive-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .archive-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .archive-btn.resume {
+      background: var(--accent);
+      color: white;
+    }
+
+    .archive-btn.resume:hover {
+      background: #2d6a4f;
+    }
+
+    .archive-btn.delete {
+      background: #f5a6a6;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+    }
+
+    .archive-btn.delete:hover {
+      background: #ffe0e0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .empty-state-btn {
+      padding: 12px 24px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .empty-state-btn:hover {
+      background: #2d6a4f;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .archives-header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .archives-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <script src="api.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Neuro<span>Scribe</span></h1>
+    <p>Outil de rédaction neuropsychologique propulsé par Claude</p>
+  </header>
+
+  <main>
+    <div class="archives-header">
+      <div class="archives-title">📋 Mes bilans</div>
+      <button class="back-btn" onclick="window.location.href='index.html'">← Accueil</button>
+    </div>
+
+    <div id="archives-container" class="archives-grid"></div>
+  </main>
+
+  <script>
+    async function loadArchivesList() {
+      const container = document.getElementById('archives-container');
+      
+      try {
+        const bilans = await getAllBilans();
+
+        if (!bilans || bilans.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column: 1 / -1;">
+              <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <div class="empty-state-text">Aucun bilan archivé pour le moment</div>
+                <button class="empty-state-btn" onclick="window.location.href='index.html'">Créer un nouveau bilan</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = bilans.map(bilan => `
+          <div class="archive-card">
+            <div class="archive-name">${escapeHtml(bilan.name)}</div>
+            <div class="archive-date">${bilan.date} à ${bilan.time}</div>
+            <div class="archive-actions">
+              <button class="archive-btn resume" onclick="resumeSession('${bilan.id}')">
+                ▶ Reprendre
+              </button>
+              <button class="archive-btn delete" onclick="deleteSession('${bilan.id}')">
+                🗑 Supprimer
+              </button>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Erreur loadArchivesList:', error);
+        container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: red;">❌ Erreur lors du chargement des archives</div>`;
+      }
+    }
+
+    function resumeSession(sessionId) {
+      localStorage.setItem('current_session_id', sessionId);
+      window.location.href = 'editor.html';
+    }
+
+    async function deleteSession(sessionId) {
+      if (!confirm('Êtes-vous sûr(e) de vouloir supprimer ce bilan ?')) return;
+
+      try {
+        const result = await deleteBilan(sessionId);
+        if (result) {
+          console.log('✓ Bilan supprimé');
+          loadArchivesList(); // Recharger la liste
+        } else {
+          alert('❌ Erreur lors de la suppression');
+        }
+      } catch (error) {
+        console.error('Erreur deleteSession:', error);
+        alert('❌ Erreur serveur');
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Charger les archives au démarrage
+    loadArchivesList();
+  </script>
+</body>
+</html>

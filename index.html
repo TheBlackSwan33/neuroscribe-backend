@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroScribe - Accueil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3d3d5c;
+      --paper: #faf8f4;
+      --accent: #2d6a4f;
+      --accent-light: #52b788;
+      --accent-pale: #d8f3dc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: linear-gradient(135deg, #e8e4dc 0%, #f0ebe8 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--ink);
+      color: white;
+      padding: 24px 40px;
+      text-align: center;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header h1 span {
+      color: var(--accent-light);
+    }
+
+    header p {
+      font-size: 14px;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+
+    .home-container {
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .home-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 36px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .home-subtitle {
+      font-size: 16px;
+      color: var(--ink-light);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .home-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .home-btn {
+      padding: 16px 32px;
+      font-size: 16px;
+      border: 2px solid;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .home-btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .home-btn.primary:hover {
+      background: #2d6a4f;
+      box-shadow: 0 8px 20px rgba(45, 106, 79, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .home-btn.secondary {
+      background: white;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .home-btn.secondary:hover {
+      background: var(--accent-pale);
+      box-shadow: 0 8px 20px rgba(45, 106, 79, 0.15);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+
+      main {
+        padding: 30px 20px;
+      }
+
+      .home-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+  <script src="api.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Neuro<span>Scribe</span></h1>
+    <p>Outil de rédaction neuropsychologique propulsé par Claude</p>
+  </header>
+
+  <main>
+    <div class="home-container">
+      <div class="home-title">Bienvenue</div>
+      <div class="home-subtitle">Créez et gérez vos bilans neuropsychologiques avec l'aide de Claude</div>
+      <div class="home-buttons">
+        <button class="home-btn primary" onclick="startNewBilan()">
+          📝 Commencer un nouveau bilan
+        </button>
+        <button class="home-btn secondary" onclick="window.location.href='archives.html'">
+          📋 Voir mes archives
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Vérifier s'il y a une session en cours
+    window.addEventListener('DOMContentLoaded', async function() {
+      const currentSessionId = localStorage.getItem('current_session_id');
+      if (currentSessionId) {
+        // Vérifier que la session existe toujours en BD
+        const bilan = await getBilan(currentSessionId);
+        if (bilan) {
+          console.log('📂 Session courante trouvée:', currentSessionId);
+          console.log('🔄 Redirection vers l\'éditeur...');
+          window.location.href = 'editor.html';
+        } else {
+          // Session n'existe plus, nettoyer localStorage
+          localStorage.removeItem('current_session_id');
+        }
+      }
+    });
+    
+    async function startNewBilan() {
+      try {
+        // Créer un nouveau bilan en MongoDB
+        const bilanData = {
+          id: Date.now().toString(),
+          name: 'Nouveau bilan',
+          date: new Date().toLocaleDateString('fr-FR'),
+          time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+          data: {
+            'patient-name': '',
+            'age': 'adulte',
+            'genre': 'homme',
+          }
+        };
+
+        const result = await createBilan(bilanData);
+        if (result && result.id) {
+          // Sauvegarder l'ID dans localStorage pour tracking local
+          localStorage.setItem('current_session_id', result.id);
+          console.log('📝 Nouveau bilan créé:', result.id);
+          // Rediriger vers l'éditeur
+          window.location.href = 'editor.html';
+        } else {
+          alert('❌ Erreur: Impossible de créer le bilan. Vérifiez votre connexion.');
+        }
+      } catch (error) {
+        console.error('❌ Erreur startNewBilan:', error);
+        alert('❌ Erreur serveur. Veuillez réessayer.');
+      }
+    }
+  </script>
+</body>
+</html>
