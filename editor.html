@@ -1077,6 +1077,12 @@ function buildResultsTable() {
   const age = getAge();
   const tests = age === 'enfant' ? TESTS_ENFANT : TESTS_ADULTE;
   const container = document.getElementById('results-table-container');
+  
+  if (!container) {
+    console.error('❌ results-table-container not found!');
+    return;
+  }
+  
   let html = '';
   tests.forEach(cat => {
     html += `<div style="margin-bottom:20px;">`;
@@ -1111,6 +1117,7 @@ function buildResultsTable() {
     html += `</tbody></table></div></div>`;
   });
   container.innerHTML = html;
+  console.log('✅ Tableau des résultats généré:', html.length, 'caractères');
 }
 
 // ─────────────────────────────────────────────
