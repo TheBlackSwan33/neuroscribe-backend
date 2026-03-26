@@ -1114,7 +1114,7 @@ function buildResultsTable() {
 // ─────────────────────────────────────────────
 //  CLAUDE API
 // ─────────────────────────────────────────────
-// Clé API - À configurer via variable d'environnement
+// Use environment variable for security
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 
 // ─────────────────────────────────────────────
@@ -2580,7 +2580,8 @@ document.getElementById('tutorial-modal').addEventListener('click', function(e) 
 function loadSelectedMascotte() {
   const mascottes = [
     { name: "Chien (Poppy)", file: "PoppyDoctor.svg" },
-    { name: "Cheval (Doctor)", file: "horse_mascot_doctor_v2.svg" }
+    { name: "Cheval (Doctor)", file: "horse_mascot_doctor_v2.svg" },
+    { name: "Chat (Doctor)", file: "cat_mascot_doctor_v2.svg" }
   ];
   
   const selectedIndex = parseInt(localStorage.getItem('selected_mascotte') || '0');
