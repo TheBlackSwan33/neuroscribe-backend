@@ -570,28 +570,31 @@
 <div id="main-layout">
   <!-- SIDEBAR -->
   <nav id="sidebar">
+    <div style="display: flex; justify-content: center; gap: 0; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <a onclick="window.location.href='archives.html'" style="padding: 8px 16px; color: #1a1a1a; cursor: pointer; text-decoration: none; font-size: 14px;">Mes bilans</a>
+      <span style="color: #1a1a1a;">|</span>
+      <a onclick="localStorage.removeItem('current_session_id'); window.location.href='index.html'" style="padding: 8px 16px; color: #1a1a1a; cursor: pointer; text-decoration: none; font-size: 14px;">Accueil</a>
+    </div>
     <div class="nav-label">Sections</div>
-    <a class="nav-item active" onclick="navigateToSection('config')">⚙ Configuration</a>
-    <a class="nav-item" onclick="navigateToSection('s1')">① Anamnèse</a>
-    <a class="nav-item" onclick="navigateToSection('s2')">② Contexte neuro</a>
+    <a class="nav-item active" onclick="navigateToSection('config')">Configuration</a>
+    <a class="nav-item" onclick="navigateToSection('s1')">Anamnèse</a>
+    <a class="nav-item" onclick="navigateToSection('s2')">Contexte neuro</a>
     <a class="nav-item sub" onclick="navigateToSection('s2-thymique')" id="nav-thymique" style="display:none">↳ Thymique</a>
     <a class="nav-item sub" onclick="navigateToSection('s2-cognitif')" style="display:none">↳ Cognitif</a>
     <a class="nav-item sub" onclick="navigateToSection('s2-somatique')" style="display:none">↳ Somatique</a>
     <a class="nav-item sub" onclick="navigateToSection('s2-comportemental')" style="display:none">↳ Comportemental</a>
     <a class="nav-item sub" onclick="navigateToSection('s2-demandes')" id="nav-demandes" style="display:none">↳ Demandes</a>
     <a class="nav-item sub d-scolaire" onclick="navigateToSection('s2-scolaire')" style="display:none">↳ Scolaire</a>
-    <a class="nav-item" onclick="navigateToSection('s3')">③ Résultats</a>
-    <a class="nav-item" onclick="navigateToSection('s4')">④ Conclusion</a>
-    <a class="nav-item" onclick="navigateToSection('s5')" id="nav-s5">⑤ Résumé</a>
+    <a class="nav-item" onclick="navigateToSection('s3')">Résultats</a>
+    <a class="nav-item" onclick="navigateToSection('s4')">Conclusion</a>
+    <a class="nav-item" onclick="navigateToSection('s5')" id="nav-s5">Résumé</a>
     <div class="nav-divider"></div>
     <div class="nav-label">Actions</div>
     <div class="export-section">
-      <button class="export-btn" style="background: #52b788; border-color: #2d6a4f; color: white; margin-bottom: 8px;" onclick="window.location.href='archives.html'">📋 Mes bilans</button>
-      <button class="export-btn" style="background: #f5a6a6; border-color: #c0392b; color: #c0392b; margin-bottom: 12px;" onclick="localStorage.removeItem('current_session_id'); window.location.href='index.html'">🏠 Accueil</button>
-      <div style="border-top: 1px solid #e0e0e0; padding-top: 12px; margin-top: 12px;">
-        <div style="font-size: 10px; color: #999; margin-bottom: 8px; font-weight: 500;">EXPORTS</div>
-        <button class="export-btn export-word" onclick="exportWord()">📄 Export Word</button>
-        <button class="export-btn export-pdf" onclick="exportPDF()">📕 Export PDF</button>
+      <div style="display: flex; justify-content: center; gap: 0; padding: 12px 0;">
+        <a onclick="exportWord()" style="padding: 8px 16px; color: #1a1a1a; cursor: pointer; text-decoration: none; font-size: 14px;">Word</a>
+        <span style="color: #1a1a1a;">|</span>
+        <a onclick="exportPDF()" style="padding: 8px 16px; color: #1a1a1a; cursor: pointer; text-decoration: none; font-size: 14px;">PDF</a>
       </div>
 
     </div>
@@ -1110,6 +1113,12 @@ function buildResultsTable() {
 }
 
 // ─────────────────────────────────────────────
+//  CLAUDE API
+// ─────────────────────────────────────────────
+// Clé API - À configurer via variable d'environnement
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+
+// ─────────────────────────────────────────────
 //  VIEW MANAGEMENT
 // ─────────────────────────────────────────────
 
@@ -1433,6 +1442,11 @@ if (document.readyState === 'loading') {
 } else {
   // Si le DOM est déjà chargé
   initAutoSave();
+}
+
+
+function getApiKey() {
+  return ANTHROPIC_API_KEY;
 }
 
 // Fonction pour créer un diff entre l'original et la correction
@@ -2490,5 +2504,79 @@ function deleteSession(sessionId) {
 // ─────────────────────────────────────────────
 buildResultsTable();
 </script>
+
+<!-- POPPY MASCOTTE -->
+<div id="poppy-helper" style="position: fixed; bottom: 20px; left: 20px; z-index: 500; cursor: pointer;" onclick="openTutorial()">
+  <div style="position: relative; width: 140px; height: 140px;">
+    <!-- Load real Poppy SVG -->
+    <img src="PoppyDoctor.svg" style="width: 100%; height: 100%; object-fit: contain;">
+    <!-- Question mark badge -->
+    <div style="position: absolute; top: -10px; right: -10px; width: 50px; height: 50px; background: #2d6a4f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">?</div>
+  </div>
+</div>
+
+<!-- TUTORIAL MODAL -->
+<div id="tutorial-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+  <div style="background: white; border-radius: 12px; max-width: 600px; max-height: 80vh; overflow-y: auto; padding: 30px; position: relative;">
+    <button onclick="closeTutorial()" style="position: absolute; top: 15px; right: 15px; border: none; background: none; font-size: 24px; cursor: pointer; color: #999;">✕</button>
+    
+    <h2 style="color: #1a1a1a; margin-bottom: 20px;">Guide NeuroScribe</h2>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Configuration</h3>
+      <p style="color: #555; font-size: 14px;">Sélectionnez le type de bilan et informations du patient.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Anamnèse</h3>
+      <p style="color: #555; font-size: 14px;">Histoire et antécédents du patient.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Contexte neuro</h3>
+      <p style="color: #555; font-size: 14px;">Informations neurologiques et observations cliniques.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Résultats</h3>
+      <p style="color: #555; font-size: 14px;">Résultats des tests et examens effectués.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Conclusion</h3>
+      <p style="color: #555; font-size: 14px;">Synthèse et conclusions du bilan.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Résumé</h3>
+      <p style="color: #555; font-size: 14px;">Résumé exécutif du bilan.</p>
+    </div>
+    
+    <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+      <h3 style="color: #2d6a4f; margin-bottom: 8px;">Exports</h3>
+      <p style="color: #555; font-size: 14px;">Exportez votre bilan en Word ou PDF.</p>
+    </div>
+    
+    <button onclick="closeTutorial()" style="width: 100%; padding: 12px; background: #2d6a4f; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;">Fermer</button>
+  </div>
+</div>
+
+<script>
+function openTutorial() {
+  document.getElementById('tutorial-modal').style.display = 'flex';
+}
+
+function closeTutorial() {
+  document.getElementById('tutorial-modal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.getElementById('tutorial-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeTutorial();
+  }
+});
+</script>
+
 </body>
 </html>

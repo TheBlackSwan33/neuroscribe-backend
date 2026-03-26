@@ -58,9 +58,9 @@
     main {
       flex: 1;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      padding: 60px 40px;
+      padding: 20px 40px 40px 40px;
     }
 
     .home-container {
@@ -90,10 +90,46 @@
     }
 
     .mascotte-container {
-      margin-bottom: 40px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: center;
       animation: float 3s ease-in-out infinite;
+    }
+
+    .mascotte-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .mascotte-arrow {
+      background: var(--accent);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .mascotte-arrow:hover {
+      background: #1f5333;
+      transform: scale(1.1);
+    }
+
+    .mascotte-selector .mascotte-container {
+      flex: 1;
+      max-width: 300px;
+      display: flex;
+      justify-content: center;
     }
 
     .mascotte-container svg {
@@ -166,65 +202,18 @@
 </head>
 <body>
   <header>
-    <h1>Neuro<span>Scribe</span></h1>
-    <p>Outil de rédaction neuropsychologique propulsé par Claude</p>
+    <h1>Neur🐾<span>Scribe</span></h1>
+    <p>Le coup de patte pour les bilans neuropsychologiques</p>
   </header>
 
   <main>
     <div class="home-container">
-      <div class="mascotte-container">
-        <svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
-          <!-- Collier doré avec charm rose -->
-          <ellipse cx="110" cy="90" rx="70" ry="65" fill="none" stroke="#d4af37" stroke-width="4"/>
-          <circle cx="110" cy="145" r="6" fill="#ff69b4"/>
-          
-          <!-- Tête noir profond -->
-          <ellipse cx="110" cy="60" rx="65" ry="70" fill="#0a0a0a"/>
-          
-          <!-- Oreilles - style bulldog français (courtes, pointues) -->
-          <ellipse cx="70" cy="10" rx="16" ry="28" fill="#0a0a0a" transform="rotate(-20 70 10)"/>
-          <ellipse cx="150" cy="10" rx="16" ry="28" fill="#0a0a0a" transform="rotate(20 150 10)"/>
-          <ellipse cx="70" cy="18" rx="8" ry="16" fill="#2a2a2a" transform="rotate(-20 70 18)"/>
-          <ellipse cx="150" cy="18" rx="8" ry="16" fill="#2a2a2a" transform="rotate(20 150 18)"/>
-          
-          <!-- Museau légèrement plus clair -->
-          <ellipse cx="110" cy="85" rx="45" ry="42" fill="#1a1a1a"/>
-          
-          <!-- Zones blanches caractéristiques autour des yeux -->
-          <ellipse cx="80" cy="55" rx="14" ry="16" fill="#f5f5f5"/>
-          <ellipse cx="140" cy="55" rx="14" ry="16" fill="#f5f5f5"/>
-          
-          <!-- Yeux doux et expressifs -->
-          <circle cx="80" cy="55" r="5" fill="white"/>
-          <circle cx="80" cy="55" r="3.5" fill="#1a1a1a"/>
-          <circle cx="80" cy="53" r="1.5" fill="white"/>
-          
-          <circle cx="140" cy="55" r="5" fill="white"/>
-          <circle cx="140" cy="55" r="3.5" fill="#1a1a1a"/>
-          <circle cx="140" cy="53" r="1.5" fill="white"/>
-          
-          <!-- Nez typique bulldog - large et aplati -->
-          <ellipse cx="110" cy="75" rx="8" ry="7" fill="#3a3a3a"/>
-          <ellipse cx="110" cy="75" rx="5" ry="4" fill="black"/>
-          <circle cx="106" cy="75" r="1" fill="black" opacity="0.7"/>
-          <circle cx="114" cy="75" r="1" fill="black" opacity="0.7"/>
-          
-          <!-- Ride caractéristique entre les yeux -->
-          <path d="M 110 45 Q 108 50 110 55" stroke="#000" stroke-width="1.5" fill="none" opacity="0.5"/>
-          
-          <!-- Bouche mignonne -->
-          <path d="M 110 80 Q 90 87 80 84" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M 110 80 Q 130 87 140 84" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M 110 80 L 110 85" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
-          
-          <!-- Petits plis typiques du bulldog français -->
-          <path d="M 75 68 Q 70 72 72 78" stroke="#000" stroke-width="1" fill="none" opacity="0.4"/>
-          <path d="M 145 68 Q 150 72 148 78" stroke="#000" stroke-width="1" fill="none" opacity="0.4"/>
-          
-          <!-- Sourcils arrondis pour expression adorable -->
-          <path d="M 65 45 Q 75 40 85 45" stroke="#3a3a3a" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
-          <path d="M 135 45 Q 145 40 155 45" stroke="#3a3a3a" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
-        </svg>
+      <div class="mascotte-selector">
+        <button class="mascotte-arrow" onclick="previousMascotte()">◀</button>
+        <div class="mascotte-container" id="mascotte-display">
+          <!-- Mascotte SVG sera chargée ici par JavaScript -->
+        </div>
+        <button class="mascotte-arrow" onclick="nextMascotte()">▶</button>
       </div>
       <div class="home-title">Bienvenue</div>
       <div class="home-subtitle">Créez et gérez vos bilans neuropsychologiques avec l'aide de Claude</div>
@@ -232,34 +221,80 @@
         <button class="home-btn primary" onclick="startNewBilan()">
           📝 Commencer un nouveau bilan
         </button>
-        <button class="home-btn secondary" onclick="window.location.href='archives.html'">
-          📋 Voir mes archives
+        <button class="home-btn secondary" onclick="window.location.href='bilans.html'">
+          📋 Voir mes bilans
         </button>
       </div>
     </div>
   </main>
 
   <script>
-    // Vérifier s'il y a une session en cours
-    window.addEventListener('DOMContentLoaded', async function() {
-      const currentSessionId = localStorage.getItem('current_session_id');
-      if (currentSessionId) {
-        // Vérifier que la session existe toujours en BD
-        const bilan = await getBilan(currentSessionId);
-        if (bilan) {
-          console.log('📂 Session courante trouvée:', currentSessionId);
-          console.log('🔄 Redirection vers l\'éditeur...');
-          window.location.href = 'editor.html';
-        } else {
-          // Session n'existe plus, nettoyer localStorage
-          localStorage.removeItem('current_session_id');
-        }
+    // ─────────────────────────────────────────────
+    // MASCOTTE SELECTOR - DECLARATIONS
+    // ─────────────────────────────────────────────
+    const mascottes = [
+      {
+        name: "Chien (Poppy)",
+        file: "PoppyDoctor.svg"
+      },
+      {
+        name: "Cheval (Doctor)",
+        file: "horse_mascot_doctor_v2.svg"
       }
-    });
-    
+    ];
+
+    let currentMascotteIndex = parseInt(localStorage.getItem('selected_mascotte') || '0');
+
+    function loadMascotte() {
+      const mascotte = mascottes[currentMascotteIndex];
+      const display = document.getElementById('mascotte-display');
+      
+      if (!display) {
+        console.error('❌ Element mascotte-display not found');
+        return;
+      }
+      
+      if (!mascotte) {
+        console.error('❌ Mascotte not found at index:', currentMascotteIndex);
+        return;
+      }
+      
+      console.log('📦 Chargement mascotte:', mascotte.file);
+      
+      fetch(mascotte.file)
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.text();
+        })
+        .then(svg => {
+          display.innerHTML = svg;
+          console.log('✓ Mascotte chargée:', mascotte.file);
+        })
+        .catch(error => {
+          console.error('❌ Erreur chargement mascotte:', error);
+          display.innerHTML = '<div style="color: #ccc; text-align: center; padding: 40px;">Image non disponible</div>';
+        });
+    }
+
+    function nextMascotte() {
+      currentMascotteIndex = (currentMascotteIndex + 1) % mascottes.length;
+      localStorage.setItem('selected_mascotte', currentMascotteIndex);
+      console.log('➡️ Next mascotte:', mascottes[currentMascotteIndex].name);
+      loadMascotte();
+    }
+
+    function previousMascotte() {
+      currentMascotteIndex = (currentMascotteIndex - 1 + mascottes.length) % mascottes.length;
+      localStorage.setItem('selected_mascotte', currentMascotteIndex);
+      console.log('⬅️ Previous mascotte:', mascottes[currentMascotteIndex].name);
+      loadMascotte();
+    }
+
+    // ─────────────────────────────────────────────
+    // BILAN FUNCTIONS
+    // ─────────────────────────────────────────────
     async function startNewBilan() {
       try {
-        // Créer un nouveau bilan en MongoDB
         const bilanData = {
           id: Date.now().toString(),
           name: 'Nouveau bilan',
@@ -274,10 +309,8 @@
 
         const result = await createBilan(bilanData);
         if (result && result.id) {
-          // Sauvegarder l'ID dans localStorage pour tracking local
           localStorage.setItem('current_session_id', result.id);
           console.log('📝 Nouveau bilan créé:', result.id);
-          // Rediriger vers l'éditeur
           window.location.href = 'editor.html';
         } else {
           alert('❌ Erreur: Impossible de créer le bilan. Vérifiez votre connexion.');
@@ -287,6 +320,35 @@
         alert('❌ Erreur serveur. Veuillez réessayer.');
       }
     }
+
+    // ─────────────────────────────────────────────
+    // INITIALIZATION ON DOM READY
+    // ─────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', async function() {
+      console.log('🎨 DOM ready - initializing...');
+      
+      // Load mascotte
+      loadMascotte();
+      
+      // Check for existing session
+      const currentSessionId = localStorage.getItem('current_session_id');
+      if (currentSessionId) {
+        try {
+          const bilan = await getBilan(currentSessionId);
+          if (bilan) {
+            console.log('📂 Session courante trouvée:', currentSessionId);
+            console.log('🔄 Redirection vers l\'éditeur...');
+            window.location.href = 'editor.html';
+          } else {
+            localStorage.removeItem('current_session_id');
+          }
+        } catch (error) {
+          console.error('❌ Erreur vérification session:', error);
+          localStorage.removeItem('current_session_id');
+        }
+      }
+    });
   </script>
+
 </body>
 </html>
