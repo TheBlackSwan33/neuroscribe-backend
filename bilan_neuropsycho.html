@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilan Neuropsychologique</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #3d3d5c;
+    --paper: #faf8f4;
+    --paper-warm: #f5f0e8;
+    --rule: #d4c9b0;
+    --accent: #2d6a4f;
+    --accent-light: #52b788;
+    --accent-pale: #d8f3dc;
+    --gold: #b8860b;
+    --gold-light: #ffeaa7;
+    --danger: #c0392b;
+    --claude: #7c5cbf;
+    --claude-light: #ede4ff;
+    --section-border: #2d6a4f;
+    --shadow: 0 2px 12px rgba(26,26,46,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #e8e4dc;
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  #app-header {
+    background: var(--ink);
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  #app-header .logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 20px;
+    letter-spacing: 0.02em;
+  }
+  #app-header .logo span { color: var(--accent-light); }
+  #app-header .subtitle {
+    font-size: 12px;
+    color: #aaa;
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* LAYOUT */
+  #main-layout {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  /* SIDEBAR NAV */
+  #sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+    padding-right: 8px;
+  }
+  #sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  #sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #sidebar::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+  #sidebar::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    padding: 0 12px 8px;
+  }
+  .nav-item {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--ink-light);
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: rgba(45,106,79,0.08); color: var(--accent); }
+  .nav-item.active { background: var(--accent-pale); color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+  .nav-item.sub { padding-left: 22px; font-size: 12px; }
+  .nav-divider { height: 1px; background: var(--rule); margin: 8px 12px; }
+
+  /* EXPORT BUTTONS IN SIDEBAR */
+  .export-section { margin-top: 20px; }
+  .export-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1.5px solid;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+    font-family: inherit;
+  }
+  .export-word { border-color: #2563eb; color: #2563eb; background: white; }
+  .export-word:hover { background: #eff6ff; }
+  .export-pdf { border-color: var(--danger); color: var(--danger); background: white; }
+  .export-pdf:hover { background: #fef2f2; }
+
+  /* CONTENT AREA */
+  #content-area { flex: 1; min-width: 0; }
+
+  /* CONFIG CARD */
+  .config-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--gold);
+  }
+  .config-card h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .config-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .config-group label.group-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1.5px solid var(--rule);
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.15s;
+    background: white;
+    color: var(--ink-light);
+    font-family: inherit;
+  }
+  .radio-pill input { display: none; }
+  .radio-pill:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-pale);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .radio-pill.age:has(input:checked) { border-color: var(--gold); background: var(--gold-light); color: var(--gold); }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 18px 28px;
+    border-left: 5px solid var(--section-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .section-header:hover { background: #f8faf9; }
+  .section-header.collapsed { border-left-color: var(--rule); }
+
+  .section-header.collapsed + .section-body {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 28px;
+    transition: max-height 0.3s ease;
+  }
+
+  .section-body {
+    max-height: 5000px;
+    transition: max-height 0.3s ease;
+  }
+  .section-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 17px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-num {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .collapse-icon {
+    font-size: 18px;
+    color: var(--ink-light);
+    transition: transform 0.2s;
+  }
+  .section-header.collapsed .collapse-icon { transform: rotate(-90deg); }
+
+  .section-body { 
+    padding: 0 28px 28px;
+    max-height: 5000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--paper-warm);
+  }
+  .subsection:first-child { border-top: none; padding-top: 8px; }
+  .subsection-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .subsection-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 14px;
+    background: var(--accent-light);
+    border-radius: 2px;
+  }
+
+  /* TEXT FIELDS */
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .field-label .dot {
+    width: 6px; height: 6px;
+    background: var(--accent-light);
+    border-radius: 50%;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--paper);
+    resize: vertical;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    min-height: 100px;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.1);
+    background: white;
+  }
+
+  /* CLAUDE AIDE */
+  .claude-panel {
+    margin-top: 14px;
+    background: #faf8ff;
+    border: 1.5px solid #d4c8f0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .claude-panel-header {
+    padding: 10px 16px;
+    background: #f3eeff;
+    border-bottom: 1px solid #d4c8f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--claude);
+  }
+  .claude-panel-header .claude-icon {
+    width: 20px; height: 20px;
+    background: var(--claude);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: white;
+  }
+  .claude-panel-body {
+    padding: 12px 16px;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
+    opacity: 1;
+  }
+  .claude-panel.collapsed .claude-panel-body {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 16px;
+  }
+  
+  /* Styles pour les corrections avec changements en rouge */
+  .correction-diff {
+    font-family: 'Source Sans 3', sans-serif;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.6;
+  }
+  .diff-changed {
+    background-color: #ffe8e8;
+    color: #c0392b;
+    font-weight: 600;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .copy-corrected-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #52b788;
+    background: #d8f3dc;
+    color: #2d6a4f;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.15s;
+  }
+  .copy-corrected-btn:hover {
+    background: #52b788;
+    color: white;
+  }
+  
+  .claude-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .claude-btn {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1.5px solid var(--claude);
+    background: white;
+    color: var(--claude);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .claude-btn:hover { background: var(--claude-light); }
+  .claude-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .claude-btn.loading { opacity: 0.7; }
+  .claude-output {
+    width: 100%;
+    min-height: 80px;
+    background: white;
+    border: 1px solid #d4c8f0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    resize: vertical;
+  }
+  .claude-copy-btn {
+    margin-top: 6px;
+    padding: 5px 12px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .claude-copy-btn:hover { background: var(--accent-light); }
+
+  /* RESULTS TABLE */
+  .results-table-wrapper { overflow-x: auto; margin-top: 12px; }
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .results-table th {
+    background: var(--ink);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .results-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: middle;
+  }
+  .results-table tr:nth-child(even) td { background: var(--paper); }
+  .results-table tr:hover td { background: var(--accent-pale); }
+  .results-table td:first-child { font-weight: 600; color: var(--ink-light); width: 35%; }
+  .results-table input[type="text"],
+  .results-table input[type="number"],
+  .results-table select {
+    width: 100%;
+    padding: 5px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    background: white;
+    color: var(--ink);
+  }
+  .results-table input:focus, .results-table select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  /* LOADING SPINNER */
+  .spinner {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border: 2px solid #d4c8f0;
+    border-top-color: var(--claude);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* NOTIFICATION */
+  #toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--ink);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 9999;
+  }
+  #toast.show { opacity: 1; }
+
+  /* VERSION SEPARATOR */
+  .version-sep {
+    text-align: center;
+    font-size: 11px;
+    color: var(--claude);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 0 4px;
+    position: relative;
+  }
+  .version-sep::before, .version-sep::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background: #d4c8f0;
+  }
+  .version-sep::before { left: 0; }
+  .version-sep::after { right: 0; }
+
+  .version-label {
+    display: inline-block;
+    background: #f3eeff;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid #d4c8f0;
+    font-size: 11px;
+    color: var(--claude);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* HOME VIEW */
+  #home-view {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  #home-view.active {
+    display: flex;
+  }
+
+  .home-container {
+    max-width: 500px;
+  }
+
+  .home-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 42px;
+    color: var(--ink);
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .home-subtitle {
+    font-size: 18px;
+    color: var(--ink-light);
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .home-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .home-btn {
+    padding: 18px 32px;
+    font-size: 16px;
+    border: 2px solid;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .home-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .home-btn.primary:hover {
+    background: #2d6a4f;
+    box-shadow: 0 8px 20px rgba(45, 106, 79, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .home-btn.secondary {
+    background: white;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .home-btn.secondary:hover {
+    background: var(--accent-pale);
+    box-shadow: 0 8px 20px rgba(45, 106, 79, 0.15);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main-layout { padding: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app-header">
+  <div class="logo">Neuro<span>Scribe</span></div>
+  <div style="font-size:12px;color:#aaa;margin-left:8px;">Aide à la rédaction neuropsychologique</div>
+  <div class="subtitle">v1.0 — Propulsé par Claude</div>
+</div>
+
+<div id="main-layout">
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="nav-label">Sections</div>
+    <a class="nav-item active" onclick="navigateToSection('config')">⚙ Configuration</a>
+    <a class="nav-item" onclick="navigateToSection('s1')">① Anamnèse</a>
+    <a class="nav-item" onclick="navigateToSection('s2')">② Contexte neuro</a>
+    <a class="nav-item sub" onclick="navigateToSection('s2-thymique')" id="nav-thymique" style="display:none">↳ Thymique</a>
+    <a class="nav-item sub" onclick="navigateToSection('s2-cognitif')" style="display:none">↳ Cognitif</a>
+    <a class="nav-item sub" onclick="navigateToSection('s2-somatique')" style="display:none">↳ Somatique</a>
+    <a class="nav-item sub" onclick="navigateToSection('s2-comportemental')" style="display:none">↳ Comportemental</a>
+    <a class="nav-item sub" onclick="navigateToSection('s2-demandes')" id="nav-demandes" style="display:none">↳ Demandes</a>
+    <a class="nav-item sub d-scolaire" onclick="navigateToSection('s2-scolaire')" style="display:none">↳ Scolaire</a>
+    <a class="nav-item" onclick="navigateToSection('s3')">③ Résultats</a>
+    <a class="nav-item" onclick="navigateToSection('s4')">④ Conclusion</a>
+    <a class="nav-item" onclick="navigateToSection('s5')" id="nav-s5">⑤ Résumé</a>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Actions</div>
+    <div class="export-section">
+      <button class="export-btn" style="background: #52b788; border-color: #2d6a4f; color: white; margin-bottom: 8px;" onclick="showArchivesView()">📋 Mes bilans</button>
+      <button class="export-btn" style="background: #f5a6a6; border-color: #c0392b; color: #c0392b; margin-bottom: 12px;" onclick="resetBilan()">🏠 Accueil</button>
+      <div style="border-top: 1px solid #e0e0e0; padding-top: 12px; margin-top: 12px;">
+        <div style="font-size: 10px; color: #999; margin-bottom: 8px; font-weight: 500;">EXPORTS</div>
+        <button class="export-btn export-word" onclick="exportWord()">📄 Export Word</button>
+        <button class="export-btn export-pdf" onclick="exportPDF()">📕 Export PDF</button>
+      </div>
+      <div style="border-top: 1px solid #e0e0e0; padding-top: 12px; margin-top: 12px;">
+        <button class="export-btn" style="background: #f8f8f8; border-color: #d0d0d0; color: #555; font-size: 12px;" onclick="showArchivesView()">📋 Voir archives</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME VIEW -->
+  <div id="home-view" class="active">
+    <div class="home-container">
+      <div class="home-title">NeuroScribe</div>
+      <div class="home-subtitle">Outil de rédaction neuropsychologique propulsé par Claude</div>
+      <div class="home-buttons">
+        <button class="home-btn primary" onclick="startNewBilan()">
+          📝 Commencer un nouveau bilan
+        </button>
+        <button class="home-btn secondary" onclick="showArchivesView()">
+          📋 Voir mes archives
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content-area">
+
+    <!-- CONFIG -->
+    <div class="config-card" id="config">
+      <h2>⚙ Configuration du bilan</h2>
+      <div class="config-row">
+        <div class="config-group">
+          <label class="group-label">Type de bilan</label>
+          <div class="radio-group">
+            <label class="radio-pill age">
+              <input type="radio" name="age" value="adulte" checked onchange="updateConfig()"> Adulte
+            </label>
+            <label class="radio-pill age">
+              <input type="radio" name="age" value="enfant" onchange="updateConfig()"> Enfant
+            </label>
+          </div>
+        </div>
+        <div class="config-group">
+          <label class="group-label">Genre du patient</label>
+          <div class="radio-group">
+            <label class="radio-pill">
+              <input type="radio" name="genre" value="homme" checked onchange="updateConfig()"> Homme
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="genre" value="femme" onchange="updateConfig()"> Femme
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="genre" value="autre" onchange="updateConfig()"> Autre
+            </label>
+          </div>
+        </div>
+        <div class="config-group">
+          <label class="group-label">Nom du patient (optionnel)</label>
+          <input type="text" id="patient-name" placeholder="Initiales ou pseudonyme…"
+            style="padding:7px 12px;border:1.5px solid var(--rule);border-radius:8px;font-family:inherit;font-size:14px;width:200px;">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1 : ANAMNESE -->
+    <div class="section-card" id="s1">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <div class="section-title">
+          <div class="section-num">1</div>
+          Anamnèse
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="subsection">
+          <div class="field-label"><span class="dot"></span>Notes et rédaction</div>
+          <textarea id="s1-text" rows="6" placeholder="Rédigez ici l'anamnèse du patient : histoire développementale, antécédents médicaux, contexte familial, scolaire ou professionnel, motif de consultation…"></textarea>
+        </div>
+        <div class="claude-panel collapsed" onclick="toggleClaudePanel(this)">
+          <div class="claude-panel-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="claude-icon">✦</div>
+              Aide à la rédaction — Claude
+            </div>
+            <div class="claude-collapse-arrow">▼</div>
+          </div>
+          <div class="claude-panel-body">
+            <div class="claude-actions">
+              <button class="claude-btn" onclick="claudeAide('s1', 'redaction')">
+                ✦ Proposer 2 rédactions
+              </button>
+              <button class="claude-btn" onclick="claudeAide('s1', 'correction')">
+                ✎ Corriger orthographe / grammaire
+              </button>
+            </div>
+            <textarea class="claude-output" id="s1-output" rows="5" placeholder="Les propositions de Claude apparaîtront ici…" readonly></textarea>
+            <button class="claude-copy-btn" onclick="copyToMain('s1')">↑ Copier vers la zone de rédaction</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 : CONTEXTE NEURO -->
+    <div class="section-card" id="s2">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <div class="section-title">
+          <div class="section-num">2</div>
+          Contexte neurologique et neuropsychologique
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-body">
+
+        <!-- SCOLAIRE (enfants only, affiché en 1er) -->
+        <div class="subsection d-scolaire" id="s2-scolaire" style="display:none">
+          <div class="subsection-title">Sur le plan scolaire</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-scolaire-text" rows="4" placeholder="Niveau scolaire, difficultés, adaptations pédagogiques, avis enseignants…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-scolaire', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-scolaire', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-scolaire-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-scolaire')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- THYMIQUE -->
+        <div class="subsection" id="s2-thymique">
+          <div class="subsection-title">Sur le plan thymique</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-thymique-text" rows="4" placeholder="Humeur, anxiété, dépression, affect, régulation émotionnelle…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-thymique', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-thymique', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-thymique-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-thymique')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COGNITIF -->
+        <div class="subsection" id="s2-cognitif">
+          <div class="subsection-title">Sur le plan cognitif</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-cognitif-text" rows="4" placeholder="Plaintes cognitives, mémoire, attention, fonctions exécutives, langage, praxies…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-cognitif', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-cognitif', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-cognitif-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-cognitif')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOMATIQUE -->
+        <div class="subsection" id="s2-somatique">
+          <div class="subsection-title">Sur le plan somatique</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-somatique-text" rows="4" placeholder="Fatigue, douleurs, troubles du sommeil, traitements en cours, antécédents médicaux…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-somatique', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-somatique', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-somatique-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-somatique')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPORTEMENTAL ET INSTRUMENTAL -->
+        <div class="subsection" id="s2-comportemental">
+          <div class="subsection-title">Sur le plan comportemental et instrumental</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-comportemental-text" rows="4" placeholder="Comportement lors du bilan, coopération, graphisme, praxies constructives, organisation…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-comportemental', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-comportemental', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-comportemental-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-comportemental')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEMANDES -->
+        <div class="subsection" id="s2-demandes">
+          <div class="subsection-title" id="demandes-title">Demandes du patient</div>
+          <div class="field-label"><span class="dot"></span>Notes</div>
+          <textarea id="s2-demandes-text" rows="4" placeholder="Attentes, objectifs, questions posées par le patient / la patiente / les parents…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s2-demandes', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s2-demandes', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s2-demandes-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s2-demandes')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3 : RÉSULTATS -->
+    <div class="section-card" id="s3">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <div class="section-title">
+          <div class="section-num">3</div>
+          Résultats du bilan
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="subsection">
+          <div id="results-table-container"></div>
+        </div>
+        <div class="subsection">
+          <div class="field-label"><span class="dot"></span>Notes sur les résultats</div>
+          <textarea id="s3-text" rows="4" placeholder="Commentaires généraux sur les résultats, observations cliniques complémentaires…"></textarea>
+          <div class="claude-panel collapsed">
+            <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+            <div class="claude-panel-body">
+              <div class="claude-actions">
+                <button class="claude-btn" onclick="claudeAide('s3', 'redaction')">✦ Proposer 2 rédactions</button>
+                <button class="claude-btn" onclick="claudeAide('s3', 'correction')">✎ Corriger</button>
+              </div>
+              <textarea class="claude-output" id="s3-output" rows="4" placeholder="Propositions de Claude…" readonly></textarea>
+              <button class="claude-copy-btn" onclick="copyToMain('s3')">↑ Copier</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 : CONCLUSION -->
+    <div class="section-card" id="s4">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <div class="section-title">
+          <div class="section-num">4</div>
+          Conclusion du bilan
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="subsection">
+          <div class="field-label"><span class="dot"></span>Rédaction de la conclusion</div>
+          <textarea id="s4-text" rows="6" placeholder="Synthèse des résultats, diagnostic ou hypothèses diagnostiques, profil cognitif, forces et fragilités, recommandations…"></textarea>
+        </div>
+        <div class="claude-panel collapsed">
+          <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+          <div class="claude-panel-body">
+            <div class="claude-actions">
+              <button class="claude-btn" onclick="claudeAide('s4', 'redaction')">✦ Proposer 2 rédactions</button>
+              <button class="claude-btn" onclick="claudeAide('s4', 'correction')">✎ Corriger</button>
+            </div>
+            <textarea class="claude-output" id="s4-output" rows="5" placeholder="Propositions de Claude…" readonly></textarea>
+            <button class="claude-copy-btn" onclick="copyToMain('s4')">↑ Copier</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 : RÉSUMÉ -->
+    <div class="section-card" id="s5">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <div class="section-title">
+          <div class="section-num">5</div>
+          <span id="s5-title">Résumé à destination du patient</span>
+        </div>
+        <span class="collapse-icon">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="subsection">
+          <div class="field-label"><span class="dot"></span>Rédaction du résumé</div>
+          <textarea id="s5-text" rows="6" placeholder="Résumé accessible, en langage clair, des résultats et recommandations du bilan…"></textarea>
+        </div>
+        <div class="claude-panel collapsed">
+          <div class="claude-panel-header" onclick="event.stopPropagation(); toggleClaudePanel(this.closest('.claude-panel'))"><div style="display: flex; align-items: center; gap: 8px;"><div class="claude-icon">✦</div>Aide à la rédaction — Claude</div><div class="claude-collapse-arrow">▼</div></div>
+          <div class="claude-panel-body">
+            <div style="font-size:12px;color:var(--claude);margin-bottom:10px;font-style:italic;">
+              ✦ Claude peut générer ce résumé automatiquement à partir du contenu de toutes les sections.
+            </div>
+            <div class="claude-actions">
+              <button class="claude-btn" onclick="claudeResume()">✦ Générer un résumé depuis le bilan complet</button>
+              <button class="claude-btn" onclick="claudeAide('s5', 'correction')">✎ Corriger ma rédaction</button>
+            </div>
+            <textarea class="claude-output" id="s5-output" rows="6" placeholder="Le résumé généré par Claude apparaîtra ici…" readonly></textarea>
+            <button class="claude-copy-btn" onclick="copyToMain('s5')">↑ Copier vers la zone de rédaction</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+
+  <!-- ARCHIVES VIEW -->
+  <div id="archives-view" style="display: none; flex: 1; min-width: 0;">
+    <div style="background: white; border-radius: 10px; padding: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 30px;">
+        <button onclick="showBilan()" style="background: none; border: none; font-size: 24px; cursor: pointer; padding: 8px;">←</button>
+        <h1 style="font-family: 'Libre Baskerville', serif; font-size: 28px; color: #1a1a2e; margin: 0;">Bilans Archivés</h1>
+      </div>
+      
+      <div id="archives-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">
+          Aucun bilan archivé pour le moment.
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /main-layout -->
+
+<div id="toast">Copié !</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let config = { age: 'adulte', genre: 'homme' };
+
+function getAge() { return document.querySelector('input[name="age"]:checked')?.value || 'adulte'; }
+function getGenre() { return document.querySelector('input[name="genre"]:checked')?.value || 'homme'; }
+
+function updateConfig() {
+  const age = getAge();
+  const genre = getGenre();
+
+  // Scolaire visibility
+  const scolaireEls = document.querySelectorAll('.d-scolaire');
+  scolaireEls.forEach(el => el.style.display = age === 'enfant' ? '' : 'none');
+
+  // Demandes title
+  const dt = document.getElementById('demandes-title');
+  if (genre === 'femme') dt.textContent = 'Demandes de la patiente';
+  else if (genre === 'autre') dt.textContent = 'Demandes du patient';
+  else dt.textContent = 'Demandes du patient';
+
+  // Section 5 title
+  const s5t = document.getElementById('s5-title');
+  if (age === 'enfant') s5t.textContent = 'Résumé à destination des parents';
+  else if (genre === 'femme') s5t.textContent = 'Résumé à destination de la patiente';
+  else s5t.textContent = 'Résumé à destination du patient';
+
+  // Rebuild results table
+  buildResultsTable();
+}
+
+// ─────────────────────────────────────────────
+//  COLLAPSE
+// ─────────────────────────────────────────────
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+}
+
+// ─────────────────────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────────────────────
+
+// Fonction de navigation simple
+function navigateToSection(sectionId) {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    updateActiveNav(sectionId);
+  }
+}
+
+// Mettre à jour le menu actif
+function updateActiveNav(sectionId) {
+  // Enlever la classe active de tous les nav-items
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+  
+  // Ajouter la classe active à l'item correspondant
+  const allNavItems = document.querySelectorAll('.nav-item');
+  allNavItems.forEach(item => {
+    const onclick = item.getAttribute('onclick');
+    if (onclick && onclick.includes(`navigateToSection('${sectionId}')`)) {
+      item.classList.add('active');
+    }
+  });
+}
+
+// ─────────────────────────────────────────────
+//  RESULTS TABLE
+// ─────────────────────────────────────────────
+const TESTS_ADULTE = [
+  { cat: 'Fonctions exécutives', tests: [
+    { nom: 'STROOP D-KEFS - Dénomination', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'STROOP D-KEFS - Lecture', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'STROOP D-KEFS - Interférence', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'STROOP D-KEFS - Flexibilité', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'STROOP D-KEFS - Vitesse de traitement', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'WAIS-IV - Mémoire des chiffres (Ordre direct)', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'WAIS-IV - Mémoire des chiffres (Ordre indirect)', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'WAIS-IV - Mémoire des chiffres (Ordre croissant)', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'WAIS-IV - Arithmétique', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+  ]},
+  { cat: 'Mémoire', tests: [
+    { nom: 'CVLT - Liste A Essai 1', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Liste A Essai 5', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - RLCT', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - RICT', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - RLLT', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - RILT', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Persévérations', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Intrusions', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Reconnaissances', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Fausses reconnaissances', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Liste A - Essai 1 à 5', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Liste B', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Sémantique', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'CVLT - Discriminabilité', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+  ]},
+  { cat: 'Attention', tests: [
+    { nom: 'Attention soutenue', isSection: true },
+    { nom: 'Moyenne', section: '0-5 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Écart-type', section: '0-5 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Erreurs', section: '0-5 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Moyenne', section: '5-10 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Écart-type', section: '5-10 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Erreurs', section: '5-10 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Moyenne', section: '10-15 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Écart-type', section: '10-15 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Erreurs', section: '10-15 minutes', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Moyenne', section: 'Total', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Écart-type', section: 'Total', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Fausses', section: 'Total', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+    { nom: 'Omissions', section: 'Total', cols: ['Note brute', 'Score', 'Résultat', 'Interprétation'] },
+  ]},
+];
+
+const TESTS_ENFANT = [
+  { cat: 'Efficience intellectuelle générale', tests: [
+    { nom: 'WISC-V — QIT', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+    { nom: 'WISC-V — ICV', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+    { nom: 'WISC-V — IVS', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+    { nom: 'WISC-V — IMT', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+    { nom: 'WISC-V — IVT', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+    { nom: 'WISC-V — IFE', cols: ['Score brut', 'Indice', 'Percentile', 'Interprétation'] },
+  ]},
+  { cat: 'Mémoire', tests: [
+    { nom: 'CVLT-C — Rappel libre', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'CVLT-C — Rappel différé', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Empan verbal (endroit)', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Empan verbal (envers)', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+  ]},
+  { cat: 'Attention et fonctions exécutives', tests: [
+    { nom: 'TEA-Ch — Attention soutenue', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'TEA-Ch — Attention divisée', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'TMT Enfant (A)', cols: ['Temps (s)', 'Percentile', 'Erreurs', 'Interprétation'] },
+    { nom: 'TMT Enfant (B)', cols: ['Temps (s)', 'Percentile', 'Erreurs', 'Interprétation'] },
+    { nom: 'Fluences verbales', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'NEPSY-II (sous-tests)', cols: ['Sous-test', 'Score', 'Percentile', 'Interprétation'] },
+  ]},
+  { cat: 'Langage', tests: [
+    { nom: 'Épreuve de dénomination', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Lecture (vitesse / précision)', cols: ['Vitesse', 'Précision', 'Percentile', 'Interprétation'] },
+    { nom: 'Écriture / dictée', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Calcul / arithmétique', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+  ]},
+  { cat: 'Praxies et visuospatial', tests: [
+    { nom: 'Figure de Rey — Copie', cols: ['Score /36', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Figure de Rey — Rappel', cols: ['Score /36', 'Percentile', 'Interprétation', 'Notes'] },
+    { nom: 'Bender (ou VMI)', cols: ['Score', 'Percentile', 'Interprétation', 'Notes'] },
+  ]},
+  { cat: 'Questionnaires et évaluations comportementales', tests: [
+    { nom: "Conners 3 (parents — TDAH)", cols: ['T-Score', 'Seuil', 'Notes', ''] },
+    { nom: "Conners 3 (enseignant — TDAH)", cols: ['T-Score', 'Seuil', 'Notes', ''] },
+    { nom: "BRIEF (fonctions exécutives)", cols: ['T-Score global', 'Seuil', 'Notes', ''] },
+    { nom: "SDQ (comportement global)", cols: ['Score', 'Seuil', 'Notes', ''] },
+  ]},
+];
+
+function buildResultsTable() {
+  const age = getAge();
+  const tests = age === 'enfant' ? TESTS_ENFANT : TESTS_ADULTE;
+  const container = document.getElementById('results-table-container');
+  let html = '';
+  tests.forEach(cat => {
+    html += `<div style="margin-bottom:20px;">`;
+    html += `<div style="font-weight:700;font-size:13px;color:var(--ink);background:var(--accent-pale);padding:8px 12px;border-radius:6px 6px 0 0;border:1px solid var(--rule);border-bottom:none;text-transform:uppercase;letter-spacing:0.04em;">${cat.cat}</div>`;
+    html += `<div class="results-table-wrapper"><table class="results-table">`;
+    const firstColsTest = cat.tests.find(t => t.cols && t.cols.length);
+    const cols = firstColsTest ? firstColsTest.cols : ['Note brute', 'Score', 'Résultat', 'Interprétation'];
+    html += `<thead><tr><th>Test / Épreuve</th>`;
+    cols.forEach(c => { if (c) html += `<th>${c}</th>`; });
+    html += `</tr></thead><tbody>`;
+
+    let currentSection = '';
+    cat.tests.forEach(t => {
+      if (t.isSection) {
+        html += `<tr><td colspan="${1 + cols.length}" style="background:#328999;color:#fff;font-weight:700;padding:8px;border:1px solid var(--rule);text-transform:uppercase;">${t.nom}</td></tr>`;
+        return;
+      }
+
+      if (t.section && t.section !== currentSection) {
+        currentSection = t.section;
+        html += `<tr><td colspan="${1 + cols.length}" style="background:#bfe6e0;color:#075f57;font-weight:600;padding:6px;border:1px solid var(--rule);">${t.section}</td></tr>`;
+      }
+
+      const tid = 'r_' + t.nom.replace(/[^a-z0-9]/gi, '_');
+      html += `<tr><td style="padding:4px 8px;">${t.nom}</td>`;
+      (t.cols || cols).forEach(c => {
+        if (c) html += `<td><input type="text" id="${tid}_${c.replace(/[^a-z]/gi,'')}" placeholder="—" style="width:100%;box-sizing:border-box;border:1px solid var(--rule);padding:4px;"></td>`;
+      });
+      html += `</tr>`;
+    });
+
+    html += `</tbody></table></div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ─────────────────────────────────────────────
+//  CLAUDE API
+// ─────────────────────────────────────────────
+// Clé API - À configurer via variable d'environnement
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
+
+// ─────────────────────────────────────────────
+//  VIEW MANAGEMENT
+// ─────────────────────────────────────────────
+
+function showHome() {
+  document.getElementById('home-view').classList.add('active');
+  document.getElementById('content-area').style.display = 'none';
+  document.getElementById('archives-view').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'none';
+  currentSessionId = null;
+  localStorage.removeItem('bilan_neuropsycho_data');
+  console.log('🏠 Retour à l\'accueil');
+}
+
+function showBilanEditor() {
+  document.getElementById('home-view').classList.remove('active');
+  document.getElementById('content-area').style.display = 'block';
+  document.getElementById('archives-view').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'block';
+}
+
+function showArchivesView() {
+  document.getElementById('home-view').classList.remove('active');
+  document.getElementById('content-area').style.display = 'none';
+  document.getElementById('archives-view').style.display = 'block';
+  document.getElementById('sidebar').style.display = 'none';
+  loadArchivesList();
+}
+
+function startNewBilan() {
+  // Créer une nouvelle session d'archive
+  const sessionId = Date.now().toString();
+  const session = {
+    id: sessionId,
+    name: 'Nouveau bilan',
+    date: new Date().toLocaleDateString('fr-FR'),
+    time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+    data: {
+      'patient-name': '',
+      'age': 'adulte',
+      'genre': 'homme',
+    },
+    created_at: new Date().toISOString()
+  };
+
+  // Charger les archives existantes
+  const archivesStr = localStorage.getItem('bilan_archives') || '{"sessions":[]}';
+  let archives = JSON.parse(archivesStr);
+  
+  // Ajouter la nouvelle session en avant
+  archives.sessions.unshift(session);
+  
+  // Limiter à 50 archives max
+  if (archives.sessions.length > 50) {
+    archives.sessions = archives.sessions.slice(0, 50);
+  }
+  
+  localStorage.setItem('bilan_archives', JSON.stringify(archives));
+  
+  // Marquer comme session courante
+  currentSessionId = sessionId;
+  console.log('📝 Nouveau bilan créé:', sessionId);
+  
+  // Charger la session dans le formulaire
+  loadSavedData();
+  
+  // Afficher l'éditeur
+  showBilanEditor();
+  showToast('✓ Nouveau bilan créé');
+}
+
+// ─────────────────────────────────────────────
+//  SAVE/LOAD AVEC LOCALSTORAGE
+// ─────────────────────────────────────────────
+
+// Variable globale pour tracker la session en cours
+let currentSessionId = null;
+
+// Archive automatique de la session
+function autoArchiveSession() {
+  // Si pas de session courante, on ne fait rien
+  if (!currentSessionId) {
+    return;
+  }
+
+  try {
+    const patientNameEl = document.getElementById('patient-name');
+    const patientName = patientNameEl?.value?.trim() || 'Nouveau bilan';
+    
+    // Récupérer les données actuelles
+    const ageInput = document.querySelector('input[name="age"]:checked');
+    const genreInput = document.querySelector('input[name="genre"]:checked');
+    
+    const sessionData = {
+      'patient-name': patientNameEl?.value || '',
+      'age': ageInput?.value || 'adulte',
+      'genre': genreInput?.value || 'homme',
+    };
+    
+    // Ajouter tous les textareas
+    document.querySelectorAll('textarea[id*="-text"]').forEach(el => {
+      sessionData[el.id] = el.value;
+    });
+    
+    // Ajouter tous les inputs du tableau
+    document.querySelectorAll('input[id^="r_"]').forEach(el => {
+      sessionData[el.id] = el.value;
+    });
+    
+    // Charger les archives existantes
+    const archivesStr = localStorage.getItem('bilan_archives') || '{"sessions":[]}';
+    let archives = JSON.parse(archivesStr);
+    
+    // Trouver et mettre à jour la session courante
+    const sessionIndex = archives.sessions.findIndex(s => s.id === currentSessionId);
+    if (sessionIndex !== -1) {
+      archives.sessions[sessionIndex].name = patientName;
+      archives.sessions[sessionIndex].data = sessionData;
+      archives.sessions[sessionIndex].updated_at = new Date().toISOString();
+      
+      localStorage.setItem('bilan_archives', JSON.stringify(archives));
+      console.log('📦 Archive mise à jour:', patientName);
+    }
+  } catch(e) {
+    console.error('❌ Erreur auto-archivage:', e);
+  }
+}
+
+// Sauvegarde automatique dans localStorage
+function autoSaveData() {
+  try {
+    const data = {
+      'patient-name': document.getElementById('patient-name')?.value || '',
+      'age': document.querySelector('input[name="age"]:checked')?.value || 'adulte',
+      'genre': document.querySelector('input[name="genre"]:checked')?.value || 'homme',
+    };
+    
+    // Ajouter tous les textareas
+    document.querySelectorAll('textarea[id*="-text"]').forEach(el => {
+      data[el.id] = el.value;
+    });
+    
+    // Ajouter tous les inputs du tableau des résultats (r_*_*)
+    document.querySelectorAll('input[id^="r_"]').forEach(el => {
+      data[el.id] = el.value;
+    });
+    
+    const serialized = JSON.stringify(data);
+    localStorage.setItem('bilan_neuropsycho_data', serialized);
+    console.log('✅ Données sauvegardées dans localStorage:', Object.keys(data).length, 'champs');
+    
+    // Archiver aussi automatiquement
+    autoArchiveSession();
+  } catch(e) {
+    console.error('❌ Erreur sauvegarde:', e);
+  }
+}
+
+// Charge les données depuis la session courante (archives)
+function loadSavedData() {
+  try {
+    if (!currentSessionId) {
+      console.log('ℹ️ Pas de session courante');
+      return;
+    }
+    
+    // Charger les archives
+    const archivesStr = localStorage.getItem('bilan_archives') || '{"sessions":[]}';
+    const archives = JSON.parse(archivesStr);
+    const session = archives.sessions.find(s => s.id === currentSessionId);
+    
+    if (!session || !session.data) {
+      console.log('ℹ️ Session introuvable');
+      return;
+    }
+    
+    const data = session.data;
+    console.log('📂 Chargement de la session:', currentSessionId);
+    console.log('✅ Données chargées:', Object.keys(data).length, 'champs');
+    
+    // Restaurer le nom du patient
+    if (data['patient-name'] !== undefined) {
+      const el = document.getElementById('patient-name');
+      if (el) {
+        el.value = data['patient-name'];
+        console.log('✓ Nom du patient restauré');
+      }
+    }
+    
+    // Restaurer les radio buttons (age et genre)
+    if (data['age']) {
+      const el = document.querySelector(`input[name="age"][value="${data['age']}"]`);
+      if (el) {
+        el.checked = true;
+        console.log('✓ Age restauré');
+      }
+    }
+    
+    if (data['genre']) {
+      const el = document.querySelector(`input[name="genre"][value="${data['genre']}"]`);
+      if (el) {
+        el.checked = true;
+        console.log('✓ Genre restauré');
+      }
+    }
+    
+    // Restaurer les textareas
+    Object.keys(data).forEach(key => {
+      if (key.includes('-text')) {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = data[key];
+          console.log('✓ Textarea restauré:', key);
+        }
+      }
+    });
+    
+    console.log('✅ Données de base restaurées');
+    // Mettre à jour la config pour afficher les bons champs
+    updateConfig();
+    
+    // Restaurer les inputs du tableau des résultats APRÈS que buildResultsTable() les crée
+    Object.keys(data).forEach(key => {
+      if (key.startsWith('r_')) {
+        const el = document.getElementById(key);
+        if (el) {
+          el.value = data[key];
+          console.log('✓ Input tableau restauré:', key);
+        }
+      }
+    });
+    
+    console.log('✅ Toutes les données restaurées (y compris tableau)');
+  } catch(e) {
+    console.error('❌ Erreur chargement:', e);
+  }
+}
+
+// Réinitialise le bilan
+function resetBilan() {
+  if (confirm('Êtes-vous sûr(e) de vouloir revenir à l\'accueil ?')) {
+    localStorage.removeItem('bilan_neuropsycho_data');
+    currentSessionId = null;
+    
+    // Réinitialiser les radio buttons
+    document.querySelector('input[name="age"][value="adulte"]').checked = true;
+    document.querySelector('input[name="genre"][value="homme"]').checked = true;
+    
+    // Réinitialiser le nom
+    document.getElementById('patient-name').value = '';
+    
+    // Réinitialiser tous les textareas
+    document.querySelectorAll('textarea[id*="-text"]').forEach(el => {
+      el.value = '';
+    });
+    document.querySelectorAll('textarea[id*="-output"]').forEach(el => {
+      el.value = '';
+      el.innerHTML = '';
+    });
+    
+    // Réinitialiser tous les inputs du tableau des résultats
+    document.querySelectorAll('input[id^="r_"]').forEach(el => {
+      el.value = '';
+    });
+    
+    // Réinitialiser la config
+    updateConfig();
+    
+    // Retourner à l'accueil
+    showHome();
+  }
+}
+
+// Initialiser les listeners et la sauvegarde
+function initAutoSave() {
+  console.log('🔄 initAutoSave() appelée');
+  
+  // Attacher les listeners de sauvegarde
+  console.log('📍 Attachement des event listeners...');
+  
+  // Utiliser event delegation pour la sauvegarde
+  document.addEventListener('input', function(e) {
+    if (e.target.id === 'patient-name' || 
+        e.target.id.includes('-text') || 
+        e.target.id.startsWith('r_')) {
+      console.log('💾 Input détecté:', e.target.id, 'Valeur:', e.target.value.substring(0, 30));
+      autoSaveData();
+    }
+  });
+  
+  document.addEventListener('change', function(e) {
+    if (e.target.name === 'age' || e.target.name === 'genre') {
+      console.log('💾 Change détecté:', e.target.name, 'Valeur:', e.target.value);
+      autoSaveData();
+    }
+  });
+  
+  console.log('✅ Listeners attachés avec succès');
+  
+  // Afficher l'accueil par défaut (on part de zéro)
+  showHome();
+}
+
+// Initialiser quand la page est chargée
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAutoSave);
+} else {
+  // Si le DOM est déjà chargé
+  initAutoSave();
+}
+
+
+function getApiKey() {
+  return ANTHROPIC_API_KEY;
+}
+
+// Fonction pour créer un diff entre l'original et la correction
+function createCorrectionDiff(original, corrected) {
+  const origLines = original.split('\n');
+  const corrLines = corrected.split('\n');
+  const maxLen = Math.max(origLines.length, corrLines.length);
+  
+  let html = '<div class="correction-diff">';
+  
+  for (let i = 0; i < maxLen; i++) {
+    const origLine = origLines[i] || '';
+    const corrLine = corrLines[i] || '';
+    
+    if (origLine === corrLine) {
+      html += escapeHtml(origLine) + '\n';
+    } else {
+      // Différence à cette ligne - on affiche la ligne corrigée avec les changements en rouge
+      html += highlightChanges(origLine, corrLine) + '\n';
+    }
+  }
+  
+  html += '</div>';
+  return html;
+}
+
+// Fonction pour mettre en évidence les changements à un caractère près
+function highlightChanges(original, corrected) {
+  let result = corrected;
+  
+  // Algorithme simple : chercher les différences
+  const origWords = original.split(/(\s+)/);
+  const corrWords = corrected.split(/(\s+)/);
+  
+  // Si les tailles sont très différentes, mettre toute la ligne en rouge
+  if (Math.abs(original.length - corrected.length) > original.length * 0.3) {
+    return `<span class="diff-changed">${escapeHtml(corrected)}</span>`;
+  }
+  
+  // Sinon, faire un diff word-by-word
+  let highlightedResult = '';
+  for (let i = 0; i < corrWords.length; i++) {
+    const word = corrWords[i];
+    const origWord = origWords[i] || '';
+    
+    if (word !== origWord) {
+      highlightedResult += `<span class="diff-changed">${escapeHtml(word)}</span>`;
+    } else {
+      highlightedResult += escapeHtml(word);
+    }
+  }
+  
+  return highlightedResult || escapeHtml(corrected);
+}
+
+// Fonction pour échapper les caractères HTML
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Fonction pour copier le texte corrigé dans la zone de rédaction (sans les styles)
+function copyCorrectionToEditor(sectionId) {
+  const outputEl = document.getElementById(sectionId + '-output');
+  const textEl = document.getElementById(sectionId + '-text');
+  
+  // Extraire le texte sans les balises HTML
+  const rawText = outputEl.textContent || outputEl.innerText || '';
+  
+  textEl.value = rawText;
+  textEl.focus();
+  
+  // Notification
+  showToast('✓ Correction copiée avec succès');
+}
+
+async function callClaude(prompt, type = 'redaction') {
+  const response = await fetch("http://localhost:3000/api/claude", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ prompt, type })
+  });
+  
+  if (!response.ok) {
+    const err = await response.json();
+    const errorMsg = err.error?.message || `Erreur serveur (${response.status})`;
+    const error = new Error(errorMsg);
+    error.type = 'server_error';
+    throw error;
+  }
+  
+  const data = await response.json();
+  
+  // Vérifier si la réponse contient une erreur (ex: crédit insuffisant)
+  if (data.type === 'error') {
+    const errorMsg = data.error?.message || 'Erreur API inconnue';
+    const error = new Error(errorMsg);
+    
+    // Déterminer le type d'erreur
+    if (errorMsg.includes('credit balance')) {
+      error.type = 'insufficient_credits';
+    } else if (errorMsg.includes('invalid_request_error')) {
+      error.type = 'invalid_request';
+    } else {
+      error.type = 'api_error';
+    }
+    throw error;
+  }
+  
+  return data.text;
+}
+
+function toggleClaudePanel(panelEl) {
+  panelEl.classList.toggle('collapsed');
+}
+
+// ─────────────────────────────────────────────
+//  CREDIT CONFIRMATION MODAL
+// ─────────────────────────────────────────────
+
+function showCreditConfirmation(mode, callback) {
+  // Pricing estimé (en euros)
+  const pricing = {
+    'redaction': { eur: 0.025, text: 'générer 2 rédactions' },
+    'correction': { eur: 0.008, text: 'corriger le texte' },
+    'resume': { eur: 0.015, text: 'générer un résumé' },
+  };
+
+  const info = pricing[mode] || pricing['redaction'];
+  
+  // Créer la modale
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  `;
+
+  modal.innerHTML = `
+    <div style="background: white; border-radius: 12px; padding: 32px; max-width: 400px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+      <div style="font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px;">
+        ⚠️ Utilisation de crédits Claude
+      </div>
+      <div style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 20px;">
+        <p>Cette action va <strong>${info.text}</strong> en utilisant des crédits API Claude.</p>
+        <p style="margin-top: 12px;">
+          <strong>Coût estimé :</strong> <span style="color: #2d6a4f; font-size: 16px; font-weight: 700;">~${info.eur.toFixed(3)} €</span>
+        </p>
+        <p style="margin-top: 12px; font-size: 12px; color: #999;">
+          Le coût réel dépend de la longueur du texte et de la complétude de la réponse.
+        </p>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="this.closest('div').parentElement.parentElement.remove()" style="flex: 1; padding: 12px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-weight: 600; color: #555;">
+          Annuler
+        </button>
+        <button id="confirm-btn" style="flex: 1; padding: 12px; background: #2d6a4f; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; color: white;">
+          Continuer
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById('confirm-btn').onclick = () => {
+    modal.remove();
+    callback();
+  };
+}
+
+function setLoading(outputId, btns, loading) {
+  const out = document.getElementById(outputId);
+  btns.forEach(b => b.disabled = loading);
+  if (loading) out.value = '⏳ Claude rédige…';
+}
+
+function getSectionLabel(id) {
+  const map = {
+    's1': 'Anamnèse',
+    's2-scolaire': 'Plan scolaire',
+    's2-thymique': 'Plan thymique',
+    's2-cognitif': 'Plan cognitif',
+    's2-somatique': 'Plan somatique',
+    's2-comportemental': 'Plan comportemental et instrumental',
+    's2-demandes': 'Demandes du patient',
+    's3': 'Résultats du bilan',
+    's4': 'Conclusion du bilan',
+    's5': 'Résumé',
+  };
+  return map[id] || id;
+}
+
+function getPromptTemplate(sectionId, genre) {
+  const templates = {
+    's1': `Tu rédiges la section "Anamnèse" d'un bilan neuropsychologique professionnel et rigoureux.
+
+STYLE À RESPECTER ABSOLUMENT:
+- Utilise le ton neutre, objectif et factuel des rapports cliniques
+- Privilégie la narration factuelle : "vit à", "travaille comme", "est diplômée de"
+- Utilise les formulations: "la patiente explique", "elle rapporte", "elle pratique"
+- Production en 3e personne, pas de jugement personnel
+- Pas de diminutifs ou familiarités
+
+STRUCTURE ANAMNÈSE (dans cet ordre):
+1. Contexte de consultation (lieu, demande médecin)
+2. Situation actuelle: domicile, situation familiale, finances
+3. Scolarité/formation et antécédents professionnels
+4. Loisirs et hygiène de vie (tabac, alcool, exercice)
+5. Latéralité et langue maternelle (si pertinent)
+
+VOCABULAIRE à privilégier:
+- "vit seul(e)", "vit avec [personne]", "est en couple"
+- "travaille comme", "occupé(e) de", "en arrêt depuis"
+- "diplômé(e) de", "titulaire de", "a suivi"
+- "pratique [activité] régulièrement/occasionnellement"
+- "rapporte", "évoque", "explique", "décrit"
+
+Rédige de façon clinique, factuelle et organisée.`,
+    
+    's2-thymique': `Tu rédiges la section "Sur le plan thymique" d'un bilan neuropsychologique.
+
+STYLE À RESPECTER:
+- Ton neutre et clinique, basé sur observations
+- Formulations clés: "rapporte", "on retrouve", "il existe", "la patiente explique"
+- Évaluation systématique sans jugement
+
+STRUCTURE DU PLAN THYMIQUE:
+1. État thymique général (euthymique, stable, fluctuant, dépressif)
+2. Screening dépression: anhédonie, aboulie, idéation suicidaire, antécédents
+3. Anxiété: types (généralisée, anticipatoire, sociale), intensité, contexte
+4. Suivi psychiatrique/psychologique: traitement, médecin, bénéfice perçu
+5. Autres symptômes émotionnels: irritabilité, labilité, résilience
+
+VOCABULAIRE CLINIQUE:
+- "euthymique", "stable satisfaisante", "fluctuante", "dépressive"
+- "anhédonie, aboulie, idéation suicidaire" (screening systématique)
+- "rapporte une anxiété", "caractérisée par", "contexte de"
+- "se décrit comme", "évoque", "rapporte", "explique"
+- "bénéficie d'un suivi", "traitement par [nom]"
+- "entourage étayant", "ressources"
+
+Reste factuel et descriptif, pas d'interprétation excessive.`,
+    
+    's2-cognitif': `Tu rédiges la section "Sur le plan cognitif" d'un bilan neuropsychologique.
+
+STYLE À RESPECTER:
+- Formulations: "rapporte", "on retrouve", "explique", "s'associe à"
+- Résultats de tests: scores exacts et interprétation clinique
+- Lien symptôme-contexte
+
+STRUCTURE PLAN COGNITIF:
+1. Plaintes cognitives rapportées et contexte d'apparition
+2. Mémoire (antérograde, rétrograde, court terme, travail): scores de tests
+3. Attention et concentration: STROOP, CVLT scores, contexte fonctionnel
+4. Fonctions exécutives (planification, flexibilité, inhibition)
+5. Langage et praxies (si évalués)
+6. Impact sur quotidien et autonomie
+
+VOCABULAIRE:
+- "plainte attentionnelle", "difficultés mnésiques", "ralentissement"
+- "STROOP: [score]", "CVLT: [score]", "MoCA: [score]/30"
+- "défaut de concentration", "distractibilité"
+- "anxiété de performance", "compensations stratégiques"
+- "retentissement sur": autonomie, loisirs, professionnalité
+
+Lie résultats tests aux symptômes reportés.`,
+    
+    's2-somatique': `Tu rédiges la section "Sur le plan somatique" d'un bilan neuropsychologique.
+
+STYLE À RESPECTER:
+- Énumération systématique des fonctions de base
+- "rapporte", "explique", "décrit", "se plaint de"
+- Objectivité clinique: pas d'alarme injustifiée
+
+STRUCTURE PLAN SOMATIQUE:
+1. Sommeil: qualité, latence, réveils, asthénie associée
+2. Appétit et alimentation: modifications
+3. Énergie: asthénie, fatigabilité, impact quotidien
+4. Douleur/confort physique: localisation, intensité
+5. Effets secondaires traitement si pertinent
+6. Autonomie aux gestes quotidiens (si impact)
+
+VOCABULAIRE SPÉCIFIQUE:
+- "rapporte une perturbation du sommeil"
+- "latence majeure [durée]", "réveils nocturnes"
+- "asthénie", "fatigabilité cognitive", "intolérance à l'effort"
+- "se plaint de", "perte d'appétit", "modifications diététiques"
+- "ne rapporte pas de" (absence documentée)
+- "stable satisfaisante", "perturbée par", "répond peu au traitement"
+
+Reste systématique et factuel, énumère les domaines couverts.`,
+    
+    's2-scolaire': `Tu rédiges la section "Plan scolaire" pour un ENFANT/ADO, dans un bilan neuropsychologique.
+
+STYLE À RESPECTER:
+- Adapter au contexte enfant/ado
+- Intégrer scolarité, socialisation, autonomie
+- Formulations: "rapporte", "enseignants notent", "parents signalent"
+
+STRUCTURE PLAN SCOLAIRE:
+1. Scolarité: niveau actuel, redoublements, AESH si applicable
+2. Performances scolaires: forces/difficultés par matière
+3. Comportement en classe: attention, discipline, participation
+4. Relations sociales: avec pairs, avec adultes
+5. Autonomie: organisation, travail personnel
+6. Compensations mises en place
+
+VOCABULAIRE:
+- "scolarisé(e) en [niveau]", "bénéficie d'une AESH"
+- "parents rapportent", "enseignants signalent"
+- "difficultés d'apprentissage en", "points forts en"
+- "comportement agité", "perturbateur", "retiré"
+- "bon intégration sociale", "isolement"
+- "compensations: [adaptations]"`,
+    
+    's2-comportemental': `Tu rédiges la section "Plan comportemental et instrumental" d'un bilan neuropsychologique.
+
+STRUCTURE:
+1. Comportement général: impulsivité, adaptabilité, respect des règles
+2. Compétences de vie quotidienne: hygiène, repas, gestion du temps
+3. Autonomie: transport, courses, gestion administr.
+4. Instrumentales: écriture, lecture, calcul
+5. Praxies visuoconstructives si évaluées
+6. Adaptabilité aux changements
+
+VOCABULAIRE:
+- "rapporte avoir des difficultés à", "autonome pour"
+- "soutien familial/externe requis pour"
+- "compétences sociales", "lecture/écriture", "calcul"
+- "praxies visuoconstructives: peu/bien préservées"`,
+
+    's3': `Tu rédiges la section "Résultats du bilan" d'un bilan neuropsychologique.
+
+STRUCTURE:
+1. Synthèse résultats tests (scores exacts, interprétation)
+2. Profil cognitif global: efficience générale, points forts, points faibles
+3. Diagnostic neuropsychologique si applicable
+4. Corrélations symptômes/résultats
+5. Synthèse : impact fonctionnel global
+
+STYLE:
+- Factuel, basé sur données quantitatives
+- Liens entre tests et symptômes cliniques
+- Pas de projections, rester descriptif`,
+
+    's4': `Tu rédiges la section "Conclusion" d'un bilan neuropsychologique.
+
+STRUCTURE:
+1. Résumé du contexte clinique et diagnostic
+2. Profil neuropsychologique identifié
+3. Points forts du patient
+4. Difficultés et leur impact
+5. Recommandations: prise en charge (ortho, psycho), adaptations, suivi
+6. Formule de fermeture professionnelle
+
+STYLE:
+- Synthétique et clair
+- Recommandations pratiques et constructives
+- Ton bienveillant mais professionnel
+- Fin: "Je reste disponible pour discuter ces résultats..."`
+  };
+  return templates[sectionId] || templates['s2-thymique'];
+}
+
+async function claudeAide(sectionId, mode) {
+  const textEl = document.getElementById(sectionId + '-text');
+  const outputEl = document.getElementById(sectionId + '-output');
+  const panel = outputEl.closest('.claude-panel');
+  const btns = panel.querySelectorAll('.claude-btn');
+  const notes = textEl?.value?.trim() || '';
+  const age = getAge();
+  const genre = getGenre();
+  const label = getSectionLabel(sectionId);
+  const genreStr = genre === 'femme' ? 'une patiente' : genre === 'homme' ? 'un patient' : 'un patient (genre non-binaire)';
+
+  let prompt = '';
+  if (mode === 'redaction') {
+    if (!notes) {
+      outputEl.value = '⚠ Veuillez d\'abord saisir des notes dans la zone de rédaction.';
+      return;
+    }
+    const template = getPromptTemplate(sectionId, genre);
+    const genderNote = genre === 'femme' ? 'Au féminin.' : genre === 'homme' ? 'Au masculin.' : 'Genre neutre/non-binaire.';
+    prompt = `${template}
+
+PATIENT: ${genreStr} (${age}). ${genderNote}
+
+NOTES BRUTES DU CLINICIEN:
+"""
+${notes}
+"""
+
+Sur la base de ces notes brutes, propose EXACTEMENT 2 versions de rédaction professionnelle et cliniquement rigoureuse pour cette section.
+
+Chaque version doit:
+- Respecter strictement le style neuropsychologique (neutre, factuel, professionnel)
+- Adapter le genre grammatical (${genre})
+- Utiliser la terminologie appropriée et les formulations cliniques
+- Être organisée selon la structure indiquée
+- Avoir une longueur adaptée (pas de remplissage gratuit)
+
+Format de réponse OBLIGATOIRE:
+▶ VERSION 1
+[rédaction 1 - clinique, structurée, termes précis]
+
+▶ VERSION 2
+[rédaction 2 - alternative valide, tonalité peut varier légèrement mais reste clinique]`;
+  } else {
+    if (!notes) {
+      outputEl.value = '⚠ Aucun texte à corriger dans la zone de rédaction.';
+      return;
+    }
+    prompt = `Tu es correcteur linguistique expert en rédaction médicale en français. Corrige l'orthographe, la grammaire, la ponctuation et le style de ce texte de bilan neuropsychologique. Conserve le sens et le contenu exact. Ne modifie que ce qui est nécessaire. Renvoie uniquement le texte corrigé, sans commentaires ni explications.
+
+Texte à corriger :
+"""
+${notes}
+"""`;
+  }
+
+  // Afficher la modale de confirmation avant de continuer
+  showCreditConfirmation(mode, async () => {
+    setLoading(sectionId + '-output', Array.from(btns), true);
+    try {
+      const requestType = mode === 'correction' ? 'correction' : 'redaction';
+      const result = await callClaude(prompt, requestType);
+    
+    // Si c'est une correction, afficher le diff avec changements en rouge
+    if (mode === 'correction') {
+      const diffHtml = createCorrectionDiff(notes, result);
+      
+      // Créer un container div pour afficher le diff
+      let diffContainer = document.getElementById(sectionId + '-diff-container');
+      if (!diffContainer) {
+        diffContainer = document.createElement('div');
+        diffContainer.id = sectionId + '-diff-container';
+        diffContainer.style.cssText = 'background: #faf8f4; border: 1px solid #d4c9b0; border-radius: 6px; padding: 12px; margin: 8px 0; max-height: 300px; overflow-y: auto; font-family: Source Sans 3, sans-serif; font-size: 14px; line-height: 1.6;';
+        outputEl.parentNode.insertBefore(diffContainer, outputEl.nextSibling);
+      }
+      diffContainer.innerHTML = diffHtml;
+      diffContainer.style.display = 'block';
+      
+      // Cacher le textarea original
+      outputEl.style.display = 'none';
+      
+      // Ajouter un bouton pour copier vers la zone de rédaction
+      let copyBtn = document.getElementById(sectionId + '-copy-btn');
+      if (!copyBtn) {
+        copyBtn = document.createElement('button');
+        copyBtn.id = sectionId + '-copy-btn';
+        copyBtn.className = 'copy-corrected-btn';
+        copyBtn.textContent = '✓ Copier vers la rédaction';
+        copyBtn.onclick = () => {
+          const textEl = document.getElementById(sectionId + '-text');
+          textEl.value = result; // Copier le texte corrigé brut
+          textEl.focus();
+          // Réafficher le textarea et cacher le diff
+          outputEl.style.display = 'block';
+          diffContainer.style.display = 'none';
+          copyBtn.style.display = 'none';
+          showToast('✓ Correction copiée avec succès');
+        };
+        diffContainer.parentNode.insertBefore(copyBtn, diffContainer.nextSibling);
+      }
+      copyBtn.style.display = 'block';
+    } else {
+      // Pour les rédactions, garder le comportement normal
+      outputEl.value = result;
+      outputEl.style.display = 'block';
+      outputEl.readOnly = false;
+      
+      // Cacher le diff et le bouton s'ils existent
+      const diffContainer = document.getElementById(sectionId + '-diff-container');
+      const copyBtn = document.getElementById(sectionId + '-copy-btn');
+      if (diffContainer) diffContainer.style.display = 'none';
+      if (copyBtn) copyBtn.style.display = 'none';
+    }
+  } catch(e) {
+    // Afficher des messages différents selon le type d'erreur
+    outputEl.style.display = 'block';
+    const diffContainer = document.getElementById(sectionId + '-diff-container');
+    if (diffContainer) diffContainer.style.display = 'none';
+    
+    if (e.type === 'insufficient_credits') {
+      outputEl.value = `⚠ Crédits insuffisants\n\nVotre compte Anthropic n'a pas assez de crédits pour utiliser Claude.\nVeuillez ajouter des crédits sur https://console.anthropic.com/account/billing/overview`;
+      showToast('💳 Crédits insuffisants');
+    } else if (e.type === 'invalid_request') {
+      outputEl.value = `❌ Erreur de requête\n\nVérifiez que votre clé API est valide et que le serveur est actif sur http://localhost:3000`;
+      showToast('⚙ Erreur de configuration');
+    } else {
+      outputEl.value = `❌ Erreur : ${e.message}`;
+      showToast('❌ ' + e.message);
+    }
+    console.error('Claude error:', e);
+  } finally {
+    setLoading(sectionId + '-output', Array.from(btns), false);
+  }
+  });
+}
+
+async function claudeResume() {
+  const outputEl = document.getElementById('s5-output');
+  const panel = outputEl.closest('.claude-panel');
+  const btns = panel.querySelectorAll('.claude-btn');
+  const age = getAge();
+  const genre = getGenre();
+
+  const parts = {
+    'Anamnèse': document.getElementById('s1-text')?.value,
+    'Plan thymique': document.getElementById('s2-thymique-text')?.value,
+    'Plan cognitif': document.getElementById('s2-cognitif-text')?.value,
+    'Plan somatique': document.getElementById('s2-somatique-text')?.value,
+    'Plan comportemental': document.getElementById('s2-comportemental-text')?.value,
+    'Résultats': document.getElementById('s3-text')?.value,
+    'Conclusion': document.getElementById('s4-text')?.value,
+  };
+  if (age === 'enfant') parts['Plan scolaire'] = document.getElementById('s2-scolaire-text')?.value;
+
+  const content = Object.entries(parts)
+    .filter(([,v]) => v?.trim())
+    .map(([k,v]) => `## ${k}\n${v}`)
+    .join('\n\n');
+
+  if (!content) {
+    outputEl.value = '⚠ Veuillez d\'abord remplir les sections du bilan avant de générer un résumé.';
+    return;
+  }
+
+  let dest = genre === 'femme' ? 'la patiente elle-même' : genre === 'homme' ? 'le patient lui-même' : 'le patient';
+  if (age === 'enfant') dest = 'les parents de l\'enfant';
+
+  const prompt = `Tu es neuropsychologue. Sur la base du bilan neuropsychologique ci-dessous (bilan ${age}, ${genre}), rédige un résumé clair et accessible à destination de ${dest}. 
+
+Utilise un langage simple, évite le jargon technique ou explique-le brièvement. Mets en avant les points forts, les difficultés identifiées, et les recommandations pratiques. Sois bienveillant(e) et constructif(ve). Longueur : 15-25 lignes.
+
+Contenu du bilan :
+${content}`;
+
+  setLoading('s5-output', Array.from(btns), true);
+  try {
+    const result = await callClaude(prompt, 'resume');
+    outputEl.value = result;
+    outputEl.readOnly = false;
+  } catch(e) {
+    // Afficher des messages différents selon le type d'erreur
+    if (e.type === 'insufficient_credits') {
+      outputEl.value = `⚠ Crédits insuffisants\n\nVotre compte Anthropic n'a pas assez de crédits pour utiliser Claude.\nVeuillez ajouter des crédits sur https://console.anthropic.com/account/billing/overview`;
+      showToast('💳 Crédits insuffisants');
+    } else if (e.type === 'invalid_request') {
+      outputEl.value = `❌ Erreur de requête\n\nVérifiez que votre clé API est valide et que le serveur est actif sur http://localhost:3000`;
+      showToast('⚙ Erreur de configuration');
+    } else {
+      outputEl.value = `❌ Erreur : ${e.message}`;
+      showToast('❌ ' + e.message);
+    }
+    console.error('Claude error:', e);
+  }
+  setLoading('s5-output', Array.from(btns), false);
+}
+
+function copyToMain(sectionId) {
+  const out = document.getElementById(sectionId + '-output');
+  const main = document.getElementById(sectionId + '-text');
+  if (out && main && out.value && !out.value.startsWith('⚠') && !out.value.startsWith('❌') && !out.value.startsWith('⏳')) {
+    main.value = out.value;
+    showToast('Copié dans la zone de rédaction !');
+  }
+}
+
+// ─────────────────────────────────────────────
+//  TOAST
+// ─────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─────────────────────────────────────────────
+//  EXPORT WORD
+// ─────────────────────────────────────────────
+function getTableDataForExport() {
+  const age = getAge();
+  const tests = age === 'enfant' ? TESTS_ENFANT : TESTS_ADULTE;
+  return tests;
+}
+
+async function exportWord() {
+  try {
+    // Chercher la librairie docx
+    const docxLib = window.docx || window['docx'];
+    if (!docxLib || !docxLib.Document) {
+      showToast('❌ Librairie docx non chargée. Ractualisez la page.');
+      console.error('docx library not properly loaded:', window.docx);
+      return;
+    }
+    
+    const { Document, Paragraph, HeadingLevel, Packer, TextRun, AlignmentType, TableRow, TableCell, Table } = docxLib;
+    const age = getAge();
+    const genre = getGenre();
+    const patientName = document.getElementById('patient-name').value || 'Patient';
+    
+    // Déterminer les pronoms et articles
+    const article = genre === 'femme' ? 'Mme' : genre === 'homme' ? 'M.' : 'Patient(e)';
+    const pronoun = genre === 'femme' ? 'elle' : genre === 'homme' ? 'il' : 'la/le';
+
+    const children = [];
+
+    // Titre principal
+    children.push(new Paragraph({
+      text: 'BILAN NEUROPSYCHOLOGIQUE',
+      heading: HeadingLevel.HEADING_1,
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 240 },
+      bold: true,
+    }));
+
+    // Introduction professionnelle
+    children.push(new Paragraph({
+      text: `Je rencontre ${article} ${patientName} dans le cadre d'une consultation externe, à la demande de son médecin.`,
+      spacing: { after: 240 },
+    }));
+
+    const sections = [
+      { title: 'Anamnèse', id: 's1-text' },
+      ...(age === 'enfant' ? [{ title: 'Plan scolaire', id: 's2-scolaire-text' }] : []),
+      { title: 'Sur le plan thymique', id: 's2-thymique-text' },
+      { title: 'Sur le plan cognitif', id: 's2-cognitif-text' },
+      { title: 'Sur le plan somatique', id: 's2-somatique-text' },
+      { title: 'Sur le plan comportemental et instrumental', id: 's2-comportemental-text' },
+      { title: 'Demandes du patient', id: 's2-demandes-text' },
+      { title: 'Résultats du bilan', id: 's3-text' },
+      { title: 'Conclusion', id: 's4-text' },
+      { title: age === 'enfant' ? 'Résumé à destination des parents' : 'Résumé à destination du patient', id: 's5-text' },
+    ];
+
+    sections.forEach(s => {
+      const el = document.getElementById(s.id);
+      const val = el ? el.value?.trim() : '';
+      
+      // Titre de section
+      children.push(new Paragraph({
+        text: s.title,
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 240, after: 120 },
+        bold: true,
+      }));
+      
+      // Contenu - avec gestion du texte multi-lignes
+      if (val) {
+        const lines = val.split('\n');
+        lines.forEach((line, idx) => {
+          children.push(new Paragraph({
+            text: line || '',
+            spacing: { after: 120 },
+          }));
+        });
+      } else {
+        children.push(new Paragraph({
+          text: '(Non renseigné)',
+          spacing: { after: 120 },
+          italics: true,
+        }));
+      }
+      
+      // Ajouter le tableau des résultats après la section "Résultats du bilan"
+      if (s.id === 's3-text') {
+        const tests = age === 'enfant' ? TESTS_ENFANT : TESTS_ADULTE;
+        
+        tests.forEach(cat => {
+          // Titre catégorie
+          children.push(new Paragraph({
+            text: cat.cat,
+            spacing: { before: 120, after: 80 },
+            bold: true,
+            italics: true,
+          }));
+          
+          // Construire les données du tableau
+          const rows = [];
+          let currentSection = '';
+          
+          const firstColsTest = cat.tests.find(t => t.cols && t.cols.length);
+          const cols = firstColsTest ? firstColsTest.cols : ['Note brute', 'Score', 'Résultat', 'Interprétation'];
+          
+          // En-têtes
+          const headerCells = [{ text: 'Test / Épreuve', bold: true }, ...cols.map(c => ({ text: c || '', bold: true }))];
+          rows.push(new TableRow({
+            children: headerCells.map(cell => new TableCell({
+              children: [new Paragraph({ text: cell.text, bold: cell.bold })],
+            })),
+          }));
+          
+          // Lignes de données
+          cat.tests.forEach(t => {
+            if (t.isSection) return;
+            if (t.section && t.section !== currentSection) {
+              currentSection = t.section;
+              rows.push(new TableRow({
+                children: [new TableCell({
+                  columnSpan: 1 + cols.length,
+                  children: [new Paragraph({ text: t.section, bold: true })],
+                })],
+              }));
+            }
+            
+            const tid = 'r_' + t.nom.replace(/[^a-z0-9]/gi, '_');
+            const cellValues = [{ text: t.nom }];
+            
+            (t.cols || cols).forEach(c => {
+              const val = document.getElementById(tid + '_' + c.replace(/[^a-z]/gi,''))?.value || '';
+              cellValues.push({ text: val });
+            });
+            
+            rows.push(new TableRow({
+              children: cellValues.map(cell => new TableCell({
+                children: [new Paragraph({ text: cell.text })],
+              })),
+            }));
+          });
+          
+          children.push(new Table({
+            rows,
+            width: { size: 100, type: 'auto' },
+          }));
+          
+          children.push(new Paragraph({ text: '', spacing: { after: 120 } }));
+        });
+      }
+    });
+
+    // Pied de page
+    children.push(new Paragraph({
+      text: '',
+      spacing: { before: 400 },
+    }));
+    children.push(new Paragraph({
+      text: 'Je reste disponible pour discuter de ces résultats et explorer les meilleures options de prise en charge.',
+      spacing: { after: 240 },
+      italics: true,
+    }));
+
+    const doc = new Document({
+      sections: [{
+        properties: {
+          margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+        },
+        children,
+      }],
+      creator: 'NeuroScribe',
+      description: 'Bilan Neuropsychologique',
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Bilan_${patientName}_${new Date().toISOString().slice(0,10)}.docx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✓ Export Word généré !');
+  } catch(e) {
+    console.error('Erreur export Word:', e);
+    showToast('❌ Erreur : ' + e.message);
+  }
+}
+
+// ─────────────────────────────────────────────
+//  EXPORT PDF
+// ─────────────────────────────────────────────
+async function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const age = getAge();
+  const genre = getGenre();
+  const patientName = document.getElementById('patient-name').value || 'Patient';
+  const margin = 20;
+  const pageW = 210 - margin * 2;
+  let y = 25;
+
+  const addText = (text, size, bold, color) => {
+    doc.setFontSize(size);
+    doc.setFont('helvetica', bold ? 'bold' : 'normal');
+    if (color) doc.setTextColor(...color); else doc.setTextColor(26, 26, 46);
+    const lines = doc.splitTextToSize(text || '', pageW);
+    lines.forEach(line => {
+      if (y > 275) { doc.addPage(); y = 20; }
+      doc.text(line, margin, y);
+      y += size * 0.45;
+    });
+    y += 3;
+  };
+
+  addText(`Bilan Neuropsychologique`, 18, true, [26,26,46]);
+  addText(`${patientName} — ${age} — ${genre} — ${new Date().toLocaleDateString('fr-FR')}`, 10, false, [100,100,120]);
+  y += 5;
+  doc.setDrawColor(45,106,79);
+  doc.line(margin, y, margin + pageW, y);
+  y += 8;
+
+  const sections = [
+    { title: 'Anamnèse', id: 's1-text' },
+    ...(age === 'enfant' ? [{ title: 'Sur le plan scolaire', id: 's2-scolaire-text' }] : []),
+    { title: 'Sur le plan thymique', id: 's2-thymique-text' },
+    { title: 'Sur le plan cognitif', id: 's2-cognitif-text' },
+    { title: 'Sur le plan somatique', id: 's2-somatique-text' },
+    { title: 'Sur le plan comportemental et instrumental', id: 's2-comportemental-text' },
+    { title: genre === 'femme' ? 'Demandes de la patiente' : 'Demandes du patient', id: 's2-demandes-text' },
+    { title: 'Résultats — Notes', id: 's3-text' },
+    { title: 'Conclusion', id: 's4-text' },
+    { title: age === 'enfant' ? 'Résumé à destination des parents' : genre === 'femme' ? 'Résumé à destination de la patiente' : 'Résumé à destination du patient', id: 's5-text' },
+  ];
+
+  sections.forEach(s => {
+    const val = document.getElementById(s.id)?.value?.trim();
+    if (y > 265) { doc.addPage(); y = 20; }
+    doc.setFillColor(45, 106, 79);
+    doc.rect(margin, y - 4, pageW, 7, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text(s.title, margin + 2, y + 1);
+    y += 10;
+    addText(val || '(Non renseigné)', 10, false, [30, 30, 50]);
+    y += 3;
+    
+    // Ajouter le tableau des résultats après la section "Résultats — Notes"
+    if (s.id === 's3-text') {
+      const tests = age === 'enfant' ? TESTS_ENFANT : TESTS_ADULTE;
+      
+      tests.forEach(cat => {
+        if (y > 260) { doc.addPage(); y = 20; }
+        
+        // Titre catégorie
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(45, 106, 79);
+        doc.text(cat.cat, margin, y);
+        y += 6;
+        
+        // Ajouter les tests
+        const firstColsTest = cat.tests.find(t => t.cols && t.cols.length);
+        const cols = firstColsTest ? firstColsTest.cols : ['Note brute', 'Score', 'Résultat', 'Interprétation'];
+        
+        let currentSection = '';
+        cat.tests.forEach(t => {
+          if (t.isSection) return;
+          if (y > 270) { doc.addPage(); y = 20; }
+          
+          if (t.section && t.section !== currentSection) {
+            currentSection = t.section;
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 100, 120);
+            doc.text(t.section, margin + 2, y);
+            y += 5;
+          }
+          
+          const tid = 'r_' + t.nom.replace(/[^a-z0-9]/gi, '_');
+          
+          // Nom du test
+          doc.setFontSize(9);
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(30, 30, 50);
+          doc.text(t.nom, margin + 4, y);
+          
+          let columnX = margin + 80;
+          (t.cols || cols).forEach(c => {
+            const val = document.getElementById(tid + '_' + c.replace(/[^a-z]/gi,''))?.value || '—';
+            doc.text(val, columnX, y);
+            columnX += 30;
+          });
+          
+          y += 5;
+        });
+        
+        y += 2;
+      });
+    }
+  });
+
+  doc.save(`Bilan_${patientName}_${new Date().toISOString().slice(0,10)}.pdf`);
+  showToast('Export PDF généré !');
+}
+
+// ─────────────────────────────────────────────
+//  SESSION MANAGEMENT
+// ─────────────────────────────────────────────
+
+function saveSession() {
+  try {
+    console.log('saveSession() appelée');
+    
+    // Vérifier que les éléments existent
+    const patientNameEl = document.getElementById('patient-name');
+    if (!patientNameEl) {
+      console.error('Element patient-name introuvable');
+      showToast('❌ Erreur: éléments du formulaire introuvables');
+      return;
+    }
+    
+    const patientName = patientNameEl.value?.trim() || 'Sans titre';
+    console.log('Patient name:', patientName);
+    
+    // Vérifier qu'il y a du contenu
+    const textareas = document.querySelectorAll('textarea[id*="-text"]');
+    console.log('Nombre de textareas trouvés:', textareas.length);
+    
+    const hasContent = Array.from(textareas).some(el => el.value.trim());
+    console.log('Contenu présent:', hasContent);
+    
+    if (!hasContent && patientName === 'Sans titre') {
+      showToast('❌ Ajoutez au moins un contenu avant d\'archiver');
+      return;
+    }
+    
+    // Récupérer les données actuelles
+    const ageInput = document.querySelector('input[name="age"]:checked');
+    const genreInput = document.querySelector('input[name="genre"]:checked');
+    
+    console.log('Age input trouvé:', !!ageInput, 'Valeur:', ageInput?.value);
+    console.log('Genre input trouvé:', !!genreInput, 'Valeur:', genreInput?.value);
+    
+    const sessionData = {
+      'patient-name': patientNameEl.value || '',
+      'age': ageInput?.value || 'adulte',
+      'genre': genreInput?.value || 'homme',
+    };
+    
+    textareas.forEach(el => {
+      sessionData[el.id] = el.value;
+    });
+
+    // Créer l'enregistrement de session
+    const session = {
+      id: Date.now().toString(),
+      name: patientName,
+      date: new Date().toLocaleDateString('fr-FR'),
+      time: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+      data: sessionData,
+      archived_at: new Date().toISOString()
+    };
+
+    // Charger les archives existantes
+    const archivesStr = localStorage.getItem('bilan_archives') || '{"sessions":[]}';
+    console.log('Archives string:', archivesStr.substring(0, 50));
+    
+    let archives = JSON.parse(archivesStr);
+    archives.sessions.unshift(session);
+
+    // Limiter à 50 archives max
+    if (archives.sessions.length > 50) {
+      archives.sessions = archives.sessions.slice(0, 50);
+    }
+
+    localStorage.setItem('bilan_archives', JSON.stringify(archives));
+    console.log('✓ Bilan archivé:', session.name, 'Total archives:', archives.sessions.length);
+    showToast(`✓ Bilan "${patientName}" archivé !`);
+  } catch(e) {
+    console.error('Erreur archivage:', e);
+    console.error('Stack:', e.stack);
+    showToast('❌ Erreur lors de l\'archivage');
+  }
+}
+
+function showBilan() {
+  document.getElementById('archives-view').style.display = 'none';
+  document.getElementById('content-area').style.display = 'block';
+  document.getElementById('sidebar').style.display = 'block';
+  navigateToSection('config');
+}
+
+function loadArchivesList() {
+  const archives = JSON.parse(localStorage.getItem('bilan_archives') || '{"sessions":[]}');
+  const container = document.getElementById('archives-list');
+
+  if (archives.sessions.length === 0) {
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #aaa;">Aucun bilan archivé pour le moment.</div>';
+    return;
+  }
+
+  container.innerHTML = archives.sessions.map(session => `
+    <div style="background: #faf8f4; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+      <div>
+        <div style="font-size: 14px; font-weight: 600; color: #1a1a2e;">${escapeHtml(session.name)}</div>
+        <div style="font-size: 12px; color: #999; margin-top: 4px;">📅 ${session.date} à ${session.time}</div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button onclick="resumeSession('${session.id}')" style="flex: 1; padding: 8px 12px; background: #52b788; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">📖 Reprendre</button>
+        <button onclick="deleteSession('${session.id}')" style="flex: 1; padding: 8px 12px; background: #f5a6a6; color: #c0392b; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; border: 1px solid #c0392b;">🗑 Supprimer</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function resumeSession(sessionId) {
+  const archives = JSON.parse(localStorage.getItem('bilan_archives') || '{"sessions":[]}');
+  const session = archives.sessions.find(s => s.id === sessionId);
+
+  if (!session) {
+    showToast('❌ Session introuvable');
+    return;
+  }
+
+  // Réinitialiser d'abord le bilan
+  document.querySelector('input[name="age"][value="adulte"]').checked = true;
+  document.querySelector('input[name="genre"][value="homme"]').checked = true;
+  document.getElementById('patient-name').value = '';
+  document.querySelectorAll('textarea[id*="-text"]').forEach(el => {
+    el.value = '';
+  });
+
+  // Charger les données de la session
+  localStorage.setItem('bilan_neuropsycho_data', JSON.stringify(session.data));
+  loadSavedData();
+  
+  // Marquer cette session comme courante pour l'édition
+  currentSessionId = sessionId;
+  console.log('📦 Session courante définie:', sessionId);
+  
+  // Retourner à la vue principale
+  showBilan();
+  showToast(`✓ Bilan "${session.name}" chargé !`);
+}
+
+function deleteSession(sessionId) {
+  if (!confirm('Êtes-vous sûr(e) de vouloir supprimer ce bilan archivé ?')) return;
+
+  const archives = JSON.parse(localStorage.getItem('bilan_archives') || '{"sessions":[]}');
+  archives.sessions = archives.sessions.filter(s => s.id !== sessionId);
+  localStorage.setItem('bilan_archives', JSON.stringify(archives));
+  
+  loadArchivesList();
+  showToast('✓ Bilan supprimé');
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+buildResultsTable();
+</script>
+</body>
+</html>

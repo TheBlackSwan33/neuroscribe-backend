@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://cfspart.impots.gouv.fr/enp/interautresservices.do -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr-FR" lang="fr-FR" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Autres services - Mon espace particulier</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no">
+
+<link rel="icon" sizes="16x16 32x32 48x48 64x64" href="https://cfspart.impots.gouv.fr/enp/img/favicon.ico">
+<!--[if IE]>
+    <link rel="shortcut icon" href="/gabarits-tipi/favicon.ico">
+    <![endif]-->
+<!-- Optional: Android & iPhone-->
+<link rel="apple-touch-icon" href="https://cfspart.impots.gouv.fr/gabarits-tipi/_assets/favicon/favicon-152.png">
+
+<!-- Optional: IE10 Tile.-->
+<meta name="msapplication-TileColor" content="#FFFFFF">
+<meta name="msapplication-TileImage" content="/gabarits-tipi/_assets/favicon/favicon-144.png">
+
+<!-- Optional: ipads, androids, iphones, ...-->
+
+<link rel="apple-touch-icon-precomposed" href="https://cfspart.impots.gouv.fr/enp/img/favicon.ico">
+<link rel="apple-touch-icon" sizes="72x72" href="https://cfspart.impots.gouv.fr/enp/img/favicon-72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://cfspart.impots.gouv.fr/enp/img/favicon-114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://cfspart.impots.gouv.fr/enp/img/favicon-120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://cfspart.impots.gouv.fr/enp/img/favicon-144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://cfspart.impots.gouv.fr/enp/img/favicon-152.png">
+
+
+
+
+
+<link href="./Autres services - Mon espace particulier_files/application.css" rel="stylesheet">
+<script async="" src="./Autres services - Mon espace particulier_files/shS74.js"></script><script src="./Autres services - Mon espace particulier_files/jquery.min.js"></script>
+<script src="./Autres services - Mon espace particulier_files/inea.min.js" async="" defer=""></script>
+
+
+<script src="./Autres services - Mon espace particulier_files/smarttag.js"></script>
+<script src="./Autres services - Mon espace particulier_files/xitimanager.js"></script>
+<script src="./Autres services - Mon espace particulier_files/ensupres.js"></script>
+
+
+
+
+</head>
+
+<body class="particulier">
+    <noscript>
+        <p>Javascript est desactivé dans votre navigateur.</p>
+    </noscript>
+    <!--[if lt IE 10]>
+    <div class="browsehappy">
+      <div class="container">
+        <p>Savez-vous que votre navigateur est obsolète ?<p>
+        <p>Pour naviguer de la manière la plus satisfaisante sur le Web, nous vous recommandons de procéder à une <a href="http://windows.microsoft.com/fr-fr/internet-explorer/download-ie">mise à jour de votre navigateur</a>.
+        <br>Vous pouvez aussi <a href="http://browsehappy.com/">essayer d’autres navigateurs web populaires</a>.</p>
+        </div>
+      </div>
+  <![endif]-->
+
+
+    <script src="./Autres services - Mon espace particulier_files/bloc_actualiser.js"></script>
+
+<div class="contenu-bg" id="retourhaut">
+
+    <div class="container">
+
+        <!-- suite au Bug 283900 déplacement du code concernant la popup sécurisation en haut de page -->
+        <!-- input caché pour porté le boolean popinsms -->
+        <input id="popinsms" name="popinsms" value="OUT" type="hidden">
+
+        <!-- code pour la popup de sécurisation -->
+        <div class="BoxSms modal fade" role="dialog" aria-labelledby="modal-sms-label" id="modal-sms" tabindex="-1" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                    <button id="fermer" type="button" class="button-unstyled button-fermer" data-dismiss="modal">
+                                        Fermer&nbsp; <span class="dgfipicon dgfipicon-fermer"></span>
+                                    </button>
+                                <div class="sousDeclaration boutoncentre">
+                                    <h3 id="modal-sms-label">renforcez la sécurité de votre espace</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- bloc 0 (code7) Pop in violences conjugales -->
+                        <!-- cas 1 : pas de numero de portable valide -->
+                        <!-- cas 2 :  numero de portable à valider -->
+                        <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="styletexte_popin">
+                                        <span class="sousDeclarationTexte texte_gras">Pour améliorer la sécurité de votre espace,</span><span>
+                                            vérifiez et validez votre numéro de téléphone portable.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="hidden-xs col-xs-6 icone" id="icone_portable">
+                                    <span><img src="./Autres services - Mon espace particulier_files/telephone.png" alt="" id="iconesecurdonnees_portable"> </span>
+                                </div>
+                                <div class="hidden-xs col-xs-6" id="numero_portable">
+                                    <p id="numportable">06&nbsp;03&nbsp;73&nbsp;35&nbsp;19</p>
+                                </div>
+
+                                <div class="hidden-lg hidden-md hidden-sm col-xs-4 icone" id="icone_portable">
+                                    <span><img src="./Autres services - Mon espace particulier_files/telephone.png" alt="" id="iconesecurdonnees_portable"> </span>
+                                </div>
+                                <div class="hidden-lg hidden-md hidden-sm col-xs-8" id="numero_portable">
+                                    <p id="numportable">06&nbsp;03&nbsp;73&nbsp;35&nbsp;19</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-12">
+
+                                    <p class="sousDeclarationTexte texte_2">Ainsi, en cas de perte de votre numéro fiscal ou de votre
+                                        mot de passe, vous recevrez un SMS pour pouvoir les récupérer.</p>
+                                        
+                                    <p class="sousDeclarationTexte texte_2">Pour vérifier et valider votre numéro, cliquez ci-dessous&nbsp;:</p>    
+
+                                </div>
+                            </div>
+                        <!-- cas 3 :  adresse mail à valider -->
+                        <!-- cas 4 :  téléphone à renseigner + mail à confirmer -->
+                        <!-- cas 5 :  téléphone + adresse mail à confirmer ou à modifier -->
+                        <div class="row bouton">
+
+                    <div class="col-xs-12 boutoncentre">
+                            <a id="confirmdeconnexion" href="https://cfspart.impots.gouv.fr/enp/validercontact.do" class="btn btn-default" aria-label="renseigner mon numéro de téléphone" onclick="$(&#39;#modal-sms&#39;).modal(&#39;hide&#39;);"> Continuer</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+              <nav role="navigation" aria-label="Liens accès rapide">
+                <ul class="enpskiplinks">
+                    <li><a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#menu">Aller au menu</a></li>
+                    <li><a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#contenu" id="allercontenu">Aller au contenu</a></li>
+                    <li><a data-toggle="modal" data-target="#modal-action" href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#" id="deconnexion">Déconnexion</a></li>
+                </ul>
+              </nav>  
+            </div>
+        </div>
+        <header role="banner" class="prive">
+
+            <div id="header_id" class="row">
+                <div class="col-xs-10 col-xs-offset-2 col-sm-6 col-sm-offset-1 col-sm-sans-gouttiere-gauche col-md-6 col-md-offset-0">
+
+                    <!-- inea:accueil-entete:debut -->
+                    <div class="accueil-entete">
+
+                        <div class="bloc-entite-servicielle w-xs-100">
+                            <a href="https://www.impots.gouv.fr/" target="_blank" rel="noopener noreferrer" title="Accueil - impots.gouv.fr (nouvelle fenêtre)" aria-label="Accueil impots.gouv.fr, (nouvelle fenêtre)"> <img src="./Autres services - Mon espace particulier_files/bloc-marque.svg" alt="" class="bloc-marque"> <span class="sr-only">Accueil impots.gouv.fr</span>
+                            </a> <span class="bloc-logotype flex-col"> <a class="nom-site text-nowrap a-unstyled" href="https://cfspart.impots.gouv.fr/enp/accueilensupres.do"> <span class="text-particulier">Mon espace</span> particulier
+                            </a> <a class="logotype" target="_blank" rel="noopener noreferrer" href="https://www.impots.gouv.fr/" title="Accueil - impots.gouv.fr (nouvelle fenêtre)" aria-label="Accueil impots.gouv.fr, (nouvelle fenêtre)"> <img src="./Autres services - Mon espace particulier_files/logotype.svg" alt="" class="logotype"> <span class="sr-only">Accueil impots.gouv.fr</span>
+                            </a>
+                            </span>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- inea:accueil-entete:fin -->
+
+                <div class="col-xs-12 col-sm-5 col-sm-sans-gouttiere-droite col-md-6">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="btn-group btn-group-prive pull-right">
+                                <div class="btn-group dropdown recherche">
+                                    <!--   inea:bouton-compose:debut  -->
+                                    <button type="button" id="recherche" class="btn  btn-compose-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="" onclick="setTimeout(function(){$(&#39;#contenuRecherche&#39;).focus()});">
+                                        <span class="dgfipicon dgfipicon-rechercher"></span> <span>Recherche</span>
+                                    </button>
+                                    <!--  inea:bouton-compose:fin -->
+
+                                    <div class="dropdown-menu">
+                                        <form role="search" onsubmit="event.preventDefault(); lancerRecherche();
+                                                      setTimeout(function(){$(&#39;.dropdown.recherche&#39;).removeClass(&#39;open&#39;);
+                                                      $(&#39;#recherche&#39;).focus()});">
+                                            <div class="input-group input-group-recherche">
+                                                <input id="contenuRecherche" class="form-control" title="Rechercher sur impots.gouv.fr" data-placement="bottom" placeholder="Rechercher sur impots.gouv.fr" type="text">
+                                                <div class="input-group-btn">
+                                                    <button type="submit" class="btn btn-default" title="Rechercher (nouvelle fenêtre)" data-placement="left">
+                                                        <span class="dgfipicon dgfipicon-rechercher"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                                <a href="https://cfspart.impots.gouv.fr/enp/messagerie.do" id="messagerie" class="btn btn-default btn-compose-vertical"> <span class="dgfipicon dgfipicon-courriel"></span> Messagerie <br> sécurisée </a> <a href="https://cfspart.impots.gouv.fr/enp/chargementprofil.do" id="monprofil" class="btn btn-default btn-compose-vertical "> <span class="dgfipicon dgfipicon-profil"></span> <span>Mon profil</span> <span title="Attention" class="badgeSms">!</span>
+                                    </a> <a href="https://cfspart.impots.gouv.fr/enp/chargementcontact.do" target="_blank" rel="noopener noreferrer" id="mescontacts" class="btn btn-default btn-compose-vertical "> <span class="dgfipicon dgfipicon-situation-famille"></span>
+
+                                    <span>Contact et <br>RDV</span>
+                                </a>
+                                <button type="button" data-toggle="modal" data-target="#modal-action" class="btn btn-default btn-compose-vertical" id="accederdeconnexion">
+                                    <span class="dgfipicon dgfipicon-deconnexion"></span> <span>Déconnexion</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 details-identification text-right">
+                            <p class="unstyled">
+                                <span class="font-bold">ANNA VIAUD</span> <br> <span id="numfiscal">
+                                    N° fiscal : 3031240259012</span> <br> <span> Dernière connexion le 4 novembre 2024 à 18:08</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="navbar navbar-default">
+                    <div class="navbar-header">
+                     <nav role="navigation" aria-label="Menu">
+                        <button value="Menu" aria-label="[Menu]" id="buttonMenu" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                            <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                        </button>
+                     </nav>  
+                    </div>
+
+
+                    <div id="navbar-collapse" class="collapse navbar-collapse">
+                        <div class="visible-xs-block">
+                            <form role="search" onsubmit="event.preventDefault(); lancerRechercheSmartphone();">
+                                <div class="input-group input-group-recherche">
+                                    <input id="contenuRechercheSmartphone" type="text" class="form-control" title="Rechercher..." placeholder="Rechercher...">
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default" title="Lancer la recherche" data-placement="left">
+                                            <span class="dgfipicon dgfipicon-rechercher"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <nav id="menu" role="navigation" aria-label="Menu principal">
+                            <ul class="nav navbar-nav">
+                                <li id="barrenavigation_gauche"><a id="tableaubord_1" href="https://cfspart.impots.gouv.fr/enp/accueilensupres.do"> <span class="glyphicon glyphicon-th-large"></span> <span>Tableau
+                                            de bord</span>
+                                </a></li>
+
+                                <li class="visible-xs-block "><a href="https://cfspart.impots.gouv.fr/enp/chargementprofil.do"> <span class="dgfipicon dgfipicon-profil" aria-hidden="true"></span> <span>Mon
+                                            profil</span> <span title="Attention" class="badgeSms">!<span class="sr-only">validation par sms</span></span>
+                                        </a></li>
+
+                                <li class="visible-xs-block "><a href="https://cfspart.impots.gouv.fr/enp/messagerie.do"> <span class="dgfipicon dgfipicon-courriel" aria-hidden="true"></span> <span>Messagerie
+                                            sécurisée</span> </a></li>
+
+                                <li class="visible-xs-block "><a href="https://cfspart.impots.gouv.fr/enp/chargementcontact.do" target="_blank" rel="noopener noreferrer"> <span class="dgfipicon dgfipicon-situation-famille" aria-hidden="true"></span> <span>Contact et RDV</span>
+                                </a></li>
+
+                                <li class="visible-xs-block"><a data-toggle="modal" href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#modal-action"> <span class="dgfipicon dgfipicon-deconnexion"></span> <span>Déconnexion</span>
+                                </a></li>
+
+                                <li class="divider visible-xs-block" aria-hidden="true"></li>
+
+                                <li><a id="actualiser_pas_menu" href="https://cfspart.impots.gouv.fr/enp/redirectpas.do" target="_blank" rel="noopener noreferrer" title="Prélèvement à la source (nouvelle fenêtre)" data-placement="bottom"> <span class="dgfipicon dgfipicon-tva"></span> <span>Prélèvement à la source</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/interpaiements.do" id="accederauxpaiements"> <span class="dgfipicon dgfipicon-payer"></span> <span>Paiements</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/documents.do?n=0" id="documents"> <span class="dgfipicon dgfipicon-documents-groupe"></span> <span>Documents</span> </a></li>
+
+                                <!-- ajout dans le menu d'une nouvelle rubrique -->
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/gmbi.do" id="biensimmobiliers"> <span class="hidden-lg hidden-md iconessvg"> <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 146 146" xmlns="http://www.w3.org/2000/svg" width="15.000000pt" height="15.000000pt">
+                                                <path d="m0 0h145.833v145.833h-145.833z" fill="none"></path>
+                                                <g>
+                                                <path d="m11.171 95.207-2.743 1.899c-1.494 1.034-3.546.661-4.58-.832-1.034-1.494-.661-3.546.832-4.58l34.267-23.725c1.127-.781 2.62-.781 3.748 0l34.262 23.725c1.494 1.034 1.867 3.086.833 4.58-1.035 1.494-3.087 1.866-4.581.832l-2.738-1.896v25.548c0 1.818-1.474 3.292-3.292 3.292h-18.454c-1.818 0-3.292-1.474-3.292-3.292v-17.795h-9.229v17.795c0 1.818-1.474 3.292-3.291 3.292h-18.45c-1.818 0-3.292-1.474-3.292-3.292v-25.551zm6.583-4.558v26.818h11.867v-17.796c0-1.818 1.474-3.292 3.291-3.292h15.813c1.818 0 3.292 1.474 3.292 3.292v17.796h11.871v-26.816l-23.067-15.972z"></path>
+                                                <path d="m107.638 86.496c-1.496-.05-2.792.425-3.588 2.154l-2.875 7.138c-2.096.57-3.008 2.079-3.058 3.316v9.342h2.766v3.142c-.137 2.995 4.817 3.112 4.93-.03l.058-3.091h17.925l.062 3.091c.113 3.142 5.071 3.025 4.938.03v-3.142h2.758v-9.342c-.05-1.237-.962-2.746-3.058-3.316l-2.875-7.138c-.796-1.729-2.088-2.204-3.588-2.154zm.324 2.475c.126 0 .263.008.396.012l13 .038c1.192-.025 1.696-.004 2.2 1.112l2.071 5.53-21.567-.025 2.05-5.38c.317-1.079.971-1.279 1.85-1.287zm-4.524 9.462c1.287 0 2.333 1.034 2.333 2.309 0 1.279-1.046 2.316-2.333 2.316-1.292 0-2.338-1.037-2.338-2.316 0-1.275 1.046-2.309 2.338-2.309zm22.925 0c1.287 0 2.329 1.034 2.329 2.309 0 1.279-1.042 2.316-2.329 2.316-1.292 0-2.338-1.037-2.338-2.316 0-1.275 1.046-2.309 2.338-2.309z"></path>
+                                                <path d="m85.496 79.493v-4.305c0-1.355.55-2.655 1.521-3.609.975-.958 2.296-1.496 3.675-1.496h48.175c1.387 0 2.716.542 3.696 1.505.983.966 1.533 2.27 1.533 3.637v10.117h-.042v25.441c0 1.771-1.437 3.209-3.208 3.209s-3.209-1.438-3.208-3.209v-25.441h-45.734v25.441c0 1.771-1.437 3.209-3.208 3.209s-3.209-1.438-3.208-3.209v-31.058c-.001-.078.002-.155.008-.232zm52.142 1.736h-45.663v2.104h45.663zm.083-2.233v-.921h-45.746v1.25h45.687c.014-.112.034-.221.059-.329z"></path>
+                                                <path d="m55.821 28.246h7.608v7.608h-7.608z"></path>
+                                                <path d="m70.746 28.246h7.608v7.608h-7.608z"></path>
+                                                <path d="m85.504 28.246h7.608v7.608h-7.608z"></path>
+                                                <path d="m55.821 42.175h7.608v7.608h-7.608z"></path>
+                                                <path d="m70.746 42.175h7.608v7.608h-7.608z"></path>
+                                                <path d="m85.504 42.175h7.608v7.608h-7.608z"></path>
+                                                <path d="m55.821 56.1h7.608v7.608h-7.608z"></path>
+                                                <path d="m70.746 56.1h7.608v7.608h-7.608z"></path>
+                                                <path d="m85.504 56.1h7.608v7.608h-7.608z"></path>
+                                                <path d="m70.746 70.025h7.608v7.608h-7.608z"></path>
+                                                <path d="m63.429 72.644-3.996-2.619h3.996z"></path>
+                                                <path d="m41.896 58.484v-39.467c0-.538.504-.975 1.121-.975h62.821c.616 0 1.12.437 1.12.975v1.658l.005.025v42.846h-4.53v-41.613h-56.012v39.535z" fill-rule="nonzero"></path></g></svg>
+                                    </span> <span>Biens immobiliers</span>
+                                </a></li>
+
+                                <!-- ajout dans le menu de 2 nouvelles rubriques -->
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/interdeclarations.do" id="declarations"> <span class="dgfipicon dgfipicon-declarer"></span> <span>Déclarer</span>
+                                </a></li>
+                                <!-- suite à Bug 275158 modification code pour icône autres services -->
+                                <li id="barrenavigation_droite" class="active" title="Autres services - Page active"><a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do" id="autresservices"> <span class="hidden-lg hidden-md iconessvg">
+                                            <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 263 263" xmlns="http://www.w3.org/2000/svg" width="15.000000pt" height="15.000000pt">
+                                                <path d="m0 0h262.5v262.5h-262.5z" fill="none"></path>
+                                                <g>
+                                                <path d="m131.25 2.083c71.289 0 129.167 57.878 129.167 129.167s-57.878 129.167-129.167 129.167-129.167-57.878-129.167-129.167 57.878-129.167 129.167-129.167zm0 16.667c62.09 0 112.5 50.41 112.5 112.5s-50.41 112.5-112.5 112.5-112.5-50.41-112.5-112.5 50.41-112.5 112.5-112.5z"></path>
+                                                <circle cx="72.917" cy="131.25" r="14.583"></circle>
+                                                <circle cx="131.25" cy="131.25" r="14.583"></circle>
+                                                <circle cx="189.583" cy="131.25" r="14.583"></circle></g></svg>
+                                    </span> <span>Autres services</span>
+                                </a></li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- code pour la popup de déconnexion -->
+        <div class="BoxDeconnexion modal fade" role="dialog" aria-labelledby="modal-action-label" id="modal-action" tabindex="-1" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <div class="sousDeclaration" id="popupdeconnexion">
+                                    <button id="fermer" type="button" class="button-unstyled button-fermer" data-dismiss="modal">
+                                        Fermer&nbsp;<span class="dgfipicon dgfipicon-fermer"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 deconnexionLogo retraitPadding">
+                                <span class="dgfipicon dgfipicon-deconnexion"></span>
+                            </div>
+
+                            <div class="col-xs-9 col-sm-10">
+                                <div class="sousDeclaration">
+
+                                    <p id="modal-action-label">Déconnexion</p>
+                                </div>
+                                <div class="sousDeclarationTexte">
+                                    <span>Vous allez être déconnecté.</span>
+                                </div>
+                                <div class="row bouton">
+                                    <div class="col-xs-6">
+                                        <a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#" data-dismiss="modal" class="btn" id="annulerdeconnexion">Annuler </a>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <a id="confirmdeconnexion" href="https://cfspart.impots.gouv.fr/enp/j_spring_security_logout.ex" class="btn btn-primary" onclick="$(&#39;#modal-action&#39;).modal(&#39;show&#39;); $(&#39;#modal-action-label&#39;).modal(&#39;hide&#39;);">Confirmer</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div><p class="sr-only">Autres services - Mon espace particulier</p>
+
+    <div class="container general">
+    
+       <nav id="menuservices" role="navigation" aria-label="Menu page autres services">
+        <div class="row bloc-fil-ariane">
+            <div class="col-default">
+                <ol class="hidden-xs hidden-sm breadcrumb">
+                    <li><span><a href="https://cfspart.impots.gouv.fr/enp/accueilensupres.do" id="tableaudebord">Tableau de bord</a></span></li>
+                    <li><span>Autres services</span></li>
+                </ol>
+            </div>
+        </div>
+       </nav> 
+        <main id="contenu" role="main">
+
+        <div class="donneesPublique">
+
+            <div class="row bloc sousDeclarationBox declaration">
+                <h1 class="retraitgauche">autres services</h1>
+            </div>
+
+
+            <div class="hidden-xs row retraitPadding">
+
+                <div class="col-xs-12 col-sm-6 blocInfo blocInfo-2 bloc ">
+                    <div class="sousDeclarationBox donneespubliques">
+                        <h2>rechercher des transactions immobilières</h2>
+                    </div>
+                    <div class="hidden-xs sousDeclarationTexte">
+                        <span>Rechercher des transactions immobilières pour vous aider à estimer votre bien. </span>
+                    </div>
+                    <div class="row">
+                        <div class="hidden-xs col-sm-6 col-bouton">
+                            <a aria-label="Accéder, Rechercher des transactions immobilières pour vous aider à estimer votre bien (nouvelle fenêtre)" title="Rechercher des transactions immobilières pour vous aider à estimer votre bien (nouvelle fenêtre)" class="btn btn-default" href="https://cfspart.impots.gouv.fr/patrimelweb/j_appelportail" target="_blank" rel="noopener noreferrer" id="accestransactionsimmo_1">Accéder</a>
+                        </div>
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-taxe-fonciere" aria-hidden="true" style="color: #337ab7; font-size: 80px;">
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                                
+                <div class="col-xs-12 col-sm-6 blocInfo blocInfo-2 bloc">
+
+                    <div class="sousDeclarationBox donneespubliques">
+                        <h2>achat de timbres</h2>
+                    </div>
+                    <div class="hidden-xs sousDeclarationTexte">
+                        <span>Acheter des timbres fiscaux en ligne.</span>
+                    </div>
+                    <div class="row">
+                        <div class="hidden-xs col-sm-6 col-bouton">
+                            <a aria-label="Accéder, Acheter des timbres fiscaux en ligne (nouvelle fenêtre)" title="Acheter des timbres fiscaux en ligne (nouvelle fenêtre)" class="btn btn-default" href="https://timbres.impots.gouv.fr/" target="_blank" rel="noopener noreferrer" id="achetertimbres_1">Accéder</a>
+                        </div>
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-timbre-fiscale" aria-hidden="true" style="color: #337ab7; font-size: 80px;">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-sm-6 blocInfo blocInfo-2 bloc">
+
+                    <div class="sousDeclarationBox donneespubliques">
+                        <h2>simulations</h2>
+                    </div>
+                    <div class="hidden-xs sousDeclarationTexte">
+                        <span>Accéder aux simulateurs de calcul de votre impôt sur le revenu, de vos frais kilométriques ou de votre impôt sur la fortune immobilière.</span>
+                    </div>
+                    <div class="row">
+                        <div class="hidden-xs col-sm-6 col-bouton">
+                            <a aria-label="Accéder, Simulateurs de calcul de votre impôt sur le revenu, de vos frais kilométriques ou de votre impôt sur la fortune immobilière (nouvelle fenêtre)" title="Accéder aux simulateurs de calcul de votre impôt sur le revenu, de vos frais kilométriques ou de votre impôt sur la fortune immobilière (nouvelle fenêtre)" class="btn btn-default" href="https://www.impots.gouv.fr/portail/simulateurs" target="_blank" rel="noopener noreferrer" id="simulations_1">Accéder</a>
+                        </div>
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-simulateurs" aria-hidden="true" style="color: #337ab7; font-size: 80px;">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+
+            <div class="hidden-lg hidden-sm hidden-md row retraitPadding">
+
+                <a aria-label="Rechercher des transactions immobilières pour vous aider à estimer votre bien (nouvelle fenêtre)" title="Rechercher des transactions immobilières pour vous aider à estimer votre bien (nouvelle fenêtre)" class="col-xs-6 blocInfo blocInfo-3-1 bloc" href="https://cfspart.impots.gouv.fr/patrimelweb/j_appelportail" target="_blank" rel="noopener noreferrer" id="accestransactionsimmo_2">
+
+                    <div class="sousDeclarationBox donneespubliques" id="recherchertransaction">
+                        <h2>rechercher des transactions immobilières</h2>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-taxe-fonciere" aria-hidden="true" style="font-size: 60px; color: #337ab7;"></span>
+                        </div>
+                    </div> 
+                 </a>
+                
+                 <a aria-label="Acheter des timbres fiscaux en ligne (nouvelle fenêtre)" title="Acheter des timbres fiscaux en ligne (nouvelle fenêtre)" class="col-xs-6 blocInfo blocInfo-3-1 bloc" href="https://timbres.impots.gouv.fr/" target="_blank" rel="noopener noreferrer" id="achetertimbres_2">
+
+                    <div class="sousDeclarationBox donneespubliques">
+                        <h2>achat de timbres</h2>
+                    </div> 
+                    
+                    <div class="row">
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-timbre-fiscale" aria-hidden="true" style="font-size: 60px; color: #337ab7;"></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a aria-label="Accéder aux simulateurs de calcul de vôtre impôt sur le revenu, de vos frais kilométriques ou de vôtre impôt sur la fortune immobilière (nouvelle fenêtre)" title="Accéder aux simulateurs de calcul de vôtre impôt sur le revenu, de vos frais kilométriques ou de vôtre impôt sur la fortune immobilière (nouvelle fenêtre)" class="col-xs-6 blocInfo blocInfo-3-1 bloc" href="https://www.impots.gouv.fr/portail/simulateurs" target="_blank" rel="noopener noreferrer" id="simulations_2">
+
+                    <div class="sousDeclarationBox donneespubliques">
+                        <h2>simulations</h2>
+                    </div> 
+                    
+                    <div class="row">
+                        <div class="col-xs-6 icone">
+                            <span class="dgfipicon dgfipicon-simulateurs" aria-hidden="true" style="font-size: 60px; color: #337ab7;"></span>
+                        </div>
+                    </div>
+                </a>
+                
+                </div>
+            
+           
+        </div>
+
+        </main>
+    </div>
+
+
+<div id="footer_id" class="contenu-footer">
+    <footer role="contentinfo">
+        <h2 class="sr-only">Liens divers</h2>
+        <div class="container">
+            <div class="row pieddepage">
+                <div class="col-xs-12 pieddepage">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <h3 class="titre-pieddepage hidden-xs">informations</h3>
+
+                            <h3 class="titre-pieddepage visible-xs">
+                                <a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do##77#" aria-expanded="false" onclick="fonctionFooter(&#39;informations&#39;);" id="informations">informations</a>
+                            </h3>
+                            <ul class="list-unstyled hidden-xs" id="url_informations">
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/aide.do" id="aideenligne" aria-label="Aide en ligne"> <span>Aide en ligne</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/plandusite.do" id="plandesite" aria-label="Plan du site"> <span>Plan du site</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/confidentialite.do" id="confidentialite" aria-label="Confidentialité / Informations personnelles"> <span>Confidentialité /
+                                            Informations personnelles</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/dpr.do" id="dpr" target="_blank" title="Déclaration par un tiers (nouvelle fenêtre)" aria-label="Déclaration par un tiers">
+                                        <span>Déclaration par un tiers</span>
+                                </a></li>
+                                <li><a href="https://www.impots.gouv.fr/portail/securite-informatique-soyez-vigilants" target="_blank" rel="noopener" id="secuinformatique" title="Sécurité informatique (nouvelle fenêtre)" aria-label="Sécurité informatique">
+                                     <span>Sécurité informatique</span>
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        
+                            <h3 class="titre-pieddepage hidden-xs">qualité de service</h3>
+                            
+                            <h3 class="titre-pieddepage visible-xs">
+                                <a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do###" aria-expanded="false" onclick="fonctionFooter(&#39;qualite&#39;);" id="qualite">qualité de service</a> 
+                            </h3>
+                            
+                            <ul class="list-unstyled hidden-xs" id="url_qualite">
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/accessibilite.do" id="accessibilite" aria-label="Accessibilité  : partiellement conforme"> 
+                                      <span>Accessibilité : partiellement conforme</span>
+                                </a></li>
+                                <li><a href="https://www.impots.gouv.fr/portail/les-engagements-de-la-dgfip" target="_blank" rel="noopener" id="engagements" title="Les engagements de la DGFiP (nouvelle fenêtre)" aria-label="Les engagements de la DGFiP">
+                                     <span>Les engagements de la DGFiP</span>
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <h3 class="titre-pieddepage hidden-xs">rubriques du site</h3>
+                            <h3 class="titre-pieddepage visible-xs">
+                                <a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do####" aria-expanded="false" onclick="fonctionFooter(&#39;rubriques&#39;);" id="rubriques">rubriques du site</a> 
+                            </h3>
+                            
+                            <ul class="list-unstyled hidden-xs" id="url_rubriques">
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/messagerie.do" id="messageriesecurisee" aria-label="Messagerie sécurisée"> <span>Messagerie
+                                            sécurisée</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/chargementprofil.do" id="chargementprofil" aria-label="Mon profil"> <span>Mon
+                                            profil</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/accueilensupres.do" id="accesautableaudebord" aria-label="Tableau de bord"> <span>Tableau
+                                            de bord</span>
+                                </a></li>
+                                <li><a id="actualiser_pas_site" href="https://cfspart.impots.gouv.fr/enp/redirectpas.do" target="_blank" rel="noopener" title="Prélèvement à la source (nouvelle fenêtre)" aria-label="Prélèvement à la source"> <span>Prélèvement à la source</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/interpaiements.do" id="accespaiements" aria-label="Paiements"> <span>Paiements</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/documents.do?n=0" id="accesdocuments" aria-label="Documents"> <span>Documents</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/gmbi.do" id="accederbiensimmobiliers" aria-label="Biens immobiliers">
+                                      <span>Biens immobiliers</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/interdeclarations.do" aria-label="Déclarer"> <span>Déclarer</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do" aria-label="Autres services"> <span>Autres services</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/chargementcontact.do" title="Contact et RDV (nouvelle fenêtre)" target="_blank" rel="noopener" id="contact" aria-label="Contact et RDV"> <span>Contact et RDV</span>
+                                </a></li>
+                                <li><a href="https://www.impots.gouv.fr/portail/particulier/questions" id="questions" target="_blank" rel="noopener" title="Questions (nouvelle fenêtre)" aria-label="Questions"> <span>Questions</span>
+                                </a></li>
+                                <li><a href="https://cfspart.impots.gouv.fr/enp/redirectdeclaration.do" id="actualiser_declaration_site" target="_blank" rel="noopener" title="Déclaration en ligne (nouvelle fenêtre)" aria-label="Déclaration en ligne"> <span>Déclaration en ligne</span>
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <h3 class="titre-pieddepage hidden-xs">autres sites</h3>
+                            
+                            <h3 class="titre-pieddepage visible-xs">
+                                <a href="https://cfspart.impots.gouv.fr/enp/interautresservices.do#####" aria-expanded="false" onclick="fonctionFooter(&#39;autres_sites&#39;);" id="autres_sites">autres sites</a> 
+                            </h3>
+                            
+                            <ul class="list-unstyled hidden-xs" id="url_autres_sites">
+                                <li><a href="https://www.economie.gouv.fr/" id="economie" target="_blank" rel="noopener" title="Economie.gouv.fr (nouvelle fenêtre)" aria-label="Economie.gouv.fr"> <span>Economie.gouv.fr</span>
+                                </a></li>
+                                <li><a href="https://www.economie.gouv.fr/cessions" id="cessionsimmo" target="_blank" rel="noopener" title="Cessions immobilières de l&#39;État (nouvelle fenêtre)" aria-label="Cessions immobilières de l&#39;État"> <span>Cessions immobilières de l'État</span>
+                                </a></li>
+                                <li><a href="https://retraitesdeletat.gouv.fr/" id="retraites" target="_blank" rel="noopener" title="Retraites de l&#39;État (nouvelle fenêtre)" aria-label="Retraites de l&#39;État"> <span>Retraites de l'État</span>
+                                </a></li>
+                                <li><a href="https://encheres-domaine.gouv.fr/" id="ventes" target="_blank" rel="noopener" title="Ventes domaniales (nouvelle fenêtre)" aria-label="Ventes domaniales"><span>Ventes domaniales</span> </a></li>
+                                <li><a href="https://www.amendes.gouv.fr/" id="amendes" target="_blank" rel="noopener" title="Amendes (nouvelle fenêtre)" aria-label="Amendes"><span>Amendes</span> </a></li>
+                                <li><a href="https://www.payfip.gouv.fr/" id="tipibudget" target="_blank" rel="noopener" title="Paiement des factures publiques (nouvelle fenêtre)" aria-label="Paiement des factures publiques"><span>Paiement des factures publiques</span> </a></li>
+                                <li><a href="https://www.cadastre.gouv.fr/" id="cadastre" target="_blank" rel="noopener" title="Cadastre (nouvelle fenêtre)" aria-label="Cadastre"><span>Cadastre</span> </a></li>
+                                <li><a href="https://www.collectivites-locales.gouv.fr/" id="collectiviteslocales" target="_blank" rel="noopener" title="Collectivités locales (nouvelle fenêtre)" aria-label="Collectivités locales"><span>Collectivités locales</span> </a></li>
+                                <li><a href="https://www.impots.gouv.fr/portail/ouverture-des-donnees-publiques-de-la-dgfip" id="accesdonneespubliques" target="_blank" rel="noopener" title="Données publiques de la DGFiP (nouvelle fenêtre)" aria-label="Données publiques de la DGFiP">
+                                        <span>Données publiques de la DGFiP</span>
+                                </a></li>
+                                <li><a href="https://timbres.impots.gouv.fr/" id="timbres" target="_blank" rel="noopener" title="Timbres (nouvelle fenêtre)" aria-label="Timbres"><span>Timbres</span> </a></li>    
+                                <li><a href="https://timbres.impots.gouv.fr/pages/achat/redevance/informations.jsp" id="redevance" target="_blank" rel="noopener" title="Redevance du code de la route (nouvelle fenêtre)" aria-label="Redevance du code de la route"><span>Redevance du
+                                            code de la route</span> </a></li>
+                                <li><a href="http://taxesejour.impots.gouv.fr/" id="taxesejour" target="_blank" rel="noopener" title="Taxe de séjour (nouvelle fenêtre)" aria-label="Taxe de séjour"><span>Taxe de séjour</span> </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <div class="row">
+                <div class="col-xs-12 pieddepage noussuivre">
+                    <ul class="list-unstyled"> 
+                    
+                    <li class="col-xs-6 pieddepagenoussuivre">
+                        <span>Nous suivre : </span>
+                     </li>  
+                      <li>
+                         <a href="https://www.facebook.com/pages/Direction-g%C3%A9n%C3%A9rale-des-Finances-publiques/250996308359760" id="facebook" target="_blank" rel="noopener" title="La DGFIP sur Facebook (nouvelle fenêtre)"> <svg class="picto-size-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M18,5H15.5A3.5,3.5 0 0,0 12,8.5V11H10V14H12V21H15V14H18V11H15V9A1,1 0 0,1 16,8H18V5Z" style="fill:#4267b2;fill-opacity:1"></path>
+                                <path style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.01016949;stroke-miterlimit:4;stroke-dasharray:none" d="m 12.061017,17.430508 v -3.457627 h -1.016949 -1.016949 v -1.474576 -1.474576 h 1.008377 1.008378 l 0.03399,-1.70339 c 0.03242,-1.6245342 0.04715,-1.7301776 0.318155,-2.2820428 0.349686,-0.712089 1.208029,-1.5207084 1.873247,-1.7647303 0.359126,-0.1317381 0.906405,-0.1906588 2.088356,-0.224835 l 1.601695,-0.046313 v 1.4852317 1.4852318 h -1.146864 c -1.6904,0 -1.903983,0.2277909 -1.903983,2.0306316 v 1.020216 h 1.525423 1.525424 v 1.474576 1.474576 H 16.433893 14.90847 v 3.457627 3.457628 h -1.423729 -1.423729 z"></path>
+                            </svg>
+                        </a> 
+                        </li>
+                        <li>
+                        <a href="https://twitter.com/dgfip_officiel" id="twitter" target="_blank" rel="noopener" title="La DGFIP sur Twitter (nouvelle fenêtre)"> <svg class="picto-size-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M17.71,9.33C18.19,8.93 18.75,8.45 19,7.92C18.59,8.13 18.1,8.26 17.56,8.33C18.06,7.97 18.47,7.5 18.68,6.86C18.16,7.14 17.63,7.38 16.97,7.5C15.42,5.63 11.71,7.15 12.37,9.95C9.76,9.79 8.17,8.61 6.85,7.16C6.1,8.38 6.75,10.23 7.64,10.74C7.18,10.71 6.83,10.57 6.5,10.41C6.54,11.95 7.39,12.69 8.58,13.09C8.22,13.16 7.82,13.18 7.44,13.12C7.81,14.19 8.58,14.86 9.9,15C9,15.76 7.34,16.29 6,16.08C7.15,16.81 8.46,17.39 10.28,17.31C14.69,17.11 17.64,13.95 17.71,9.33Z" style="fill:#1da1f2;fill-opacity:1"></path>
+                                <path style="fill:#ffffff;fill-opacity:1;stroke-width:0.10169491" d="M 8.3398418,17.069811 C 7.7219962,16.919981 6.3632714,16.341813 6.442594,16.262491 6.4687602,16.236325 6.8203314,16.16809 7.2238635,16.110859 8.106527,15.985675 8.9686287,15.694897 9.5003392,15.343028 9.9514895,15.044471 9.9345455,14.939332 9.4218724,14.856136 8.8432045,14.762232 8.1712149,14.309128 7.8429563,13.791518 7.6794999,13.533774 7.5457627,13.28848 7.5457627,13.246422 c 0,-0.04206 0.2402542,-0.0903 0.5338983,-0.107209 L 8.6135593,13.108475 8.1043018,12.839587 C 7.235769,12.381002 6.7775136,11.77868 6.5796689,10.835639 c -0.067758,-0.322974 -0.059068,-0.336657 0.1676546,-0.26396 0.5137841,0.164741 0.9001341,0.223224 0.9001341,0.136255 0,-0.05004 -0.043564,-0.09098 -0.096809,-0.09098 -0.1878094,0 -0.7168819,-0.905751 -0.8712795,-1.4915959 C 6.525496,8.5414998 6.5476798,8.0052212 6.7475857,7.4762516 6.8373305,7.2387786 6.8520963,7.2462528 7.4751343,7.8445246 8.7597327,9.0780594 10.112734,9.7276379 11.867797,9.95345 l 0.508474,0.065422 0.0038,-0.6924868 c 0.0027,-0.5046004 0.0623,-0.802855 0.2195,-1.0992666 0.447783,-0.8443057 1.325759,-1.392928 2.331642,-1.4569778 0.749828,-0.047745 1.257415,0.1016271 1.717223,0.5053437 l 0.339428,0.2980216 0.592528,-0.200061 c 0.32589,-0.1100336 0.672612,-0.2310025 0.770493,-0.2688197 0.311895,-0.1205029 0.19344,0.1230695 -0.347907,0.7153904 l -0.525874,0.5753896 0.398755,-0.072953 C 18.095175,8.2823284 18.383927,8.2088615 18.517532,8.1591926 18.946051,7.999886 18.877,8.1570626 18.2543,8.7583829 l -0.608268,0.5873796 -0.06352,0.8644065 c -0.24812,3.376326 -2.466309,6.041812 -5.666299,6.808904 -1.017604,0.243938 -2.6822611,0.267554 -3.5763292,0.05074 z"></path>
+                            </svg>
+                        </a>
+                      </li>
+                    </ul> 
+                </div>
+            </div>
+            
+            
+            </div>
+
+        <div style="background-color: #363c48">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 pieddepage institutionnel">
+                       <ul class="list-unstyled">    
+                         <li class="col-xs-12 pieddepageright">
+                            <a href="https://www.service-public.fr/" target="_blank" rel="noopener" id="servicepublic" title="Service-public.fr (nouvelle fenêtre)"> <span>Service-public.fr</span>
+                            </a>
+                         </li>   
+                             <span aria-hidden="true" class="listelien"> | </span> 
+                         <li class="col-xs-12">  
+                            <a href="https://www.legifrance.gouv.fr/" target="_blank" rel="noopener" id="legifrance" title="Legifrance.gouv.fr (nouvelle fenêtre)"> <span>Legifrance.gouv.fr</span>
+                            </a>
+                         </li>
+                       </ul> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background-color: #272729">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 pieddepage legal">
+                        <p class="text-center">
+                                © Direction générale des Finances publiques <span aria-hidden="true"> - </span> <a href="https://cfspart.impots.gouv.fr/enp/mentionslegales.do" id="mentionslegales" aria-label="Mentions légales"> <span>Mentions
+                                        légales</span>
+                                </a>
+                            </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+
+<iframe id="aozf2D0n" frameborder="0" src="./Autres services - Mon espace particulier_files/translateSandbox.html" style="width: 0px; height: 0px; display: none;"></iframe><script type="text/javascript" id="_EA_gjs164871707" src="./Autres services - Mon espace particulier_files/1978373635"></script></body></html>

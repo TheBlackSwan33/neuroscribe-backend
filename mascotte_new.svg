@@ -1,0 +1,66 @@
+<svg viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Collier doré avec charm rose -->
+  <ellipse cx="110" cy="110" rx="70" ry="65" fill="none" stroke="#d4af37" stroke-width="4"/>
+  <circle cx="110" cy="170" r="6" fill="#ff69b4"/>
+  
+  <!-- Tête noir profond -->
+  <ellipse cx="110" cy="80" rx="65" ry="70" fill="#0a0a0a"/>
+  
+  <!-- Oreilles - style bulldog français (courtes, pointues) -->
+  <ellipse cx="70" cy="30" rx="16" ry="28" fill="#0a0a0a" transform="rotate(-20 70 30)"/>
+  <ellipse cx="150" cy="30" rx="16" ry="28" fill="#0a0a0a" transform="rotate(20 150 30)"/>
+  <ellipse cx="70" cy="38" rx="8" ry="16" fill="#2a2a2a" transform="rotate(-20 70 38)"/>
+  <ellipse cx="150" cy="38" rx="8" ry="16" fill="#2a2a2a" transform="rotate(20 150 38)"/>
+  
+  <!-- Museau légèrement plus clair -->
+  <ellipse cx="110" cy="105" rx="45" ry="42" fill="#1a1a1a"/>
+  
+  <!-- Zones blanches caractéristiques autour des yeux -->
+  <ellipse cx="80" cy="75" rx="14" ry="16" fill="#f5f5f5"/>
+  <ellipse cx="140" cy="75" rx="14" ry="16" fill="#f5f5f5"/>
+  
+  <!-- Yeux doux et expressifs -->
+  <circle cx="80" cy="75" r="5" fill="white"/>
+  <circle cx="80" cy="75" r="3.5" fill="#1a1a1a"/>
+  <circle cx="80" cy="73" r="1.5" fill="white"/>
+  
+  <circle cx="140" cy="75" r="5" fill="white"/>
+  <circle cx="140" cy="75" r="3.5" fill="#1a1a1a"/>
+  <circle cx="140" cy="73" r="1.5" fill="white"/>
+  
+  <!-- Nez typique bulldog - large et aplati -->
+  <ellipse cx="110" cy="95" rx="8" ry="7" fill="#3a3a3a"/>
+  <ellipse cx="110" cy="95" rx="5" ry="4" fill="black"/>
+  <circle cx="106" cy="95" r="1" fill="black" opacity="0.7"/>
+  <circle cx="114" cy="95" r="1" fill="black" opacity="0.7"/>
+  
+  <!-- Ride caractéristique entre les yeux -->
+  <path d="M 110 65 Q 108 70 110 75" stroke="#000" stroke-width="1.5" fill="none" opacity="0.5"/>
+  
+  <!-- Bouche mignonne -->
+  <path d="M 110 100 Q 90 107 80 104" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 110 100 Q 130 107 140 104" stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 110 100 L 110 105" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+  
+  <!-- Petits plis typiques du bulldog français -->
+  <path d="M 75 88 Q 70 92 72 98" stroke="#000" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M 145 88 Q 150 92 148 98" stroke="#000" stroke-width="1" fill="none" opacity="0.4"/>
+  
+  <!-- Sourcils arrondis pour expression adorable -->
+  <path d="M 65 65 Q 75 60 85 65" stroke="#3a3a3a" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  <path d="M 135 65 Q 145 60 155 65" stroke="#3a3a3a" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+  
+  <!-- Blouse blanche -->
+  <ellipse cx="110" cy="160" rx="70" ry="90" fill="white" stroke="#ddd" stroke-width="2"/>
+  <rect x="45" y="130" width="130" height="110" fill="white" stroke="#ddd" stroke-width="2" rx="5"/>
+  
+  <!-- Manches -->
+  <ellipse cx="30" cy="150" rx="18" ry="50" fill="white" stroke="#ddd" stroke-width="2"/>
+  <ellipse cx="190" cy="150" rx="18" ry="50" fill="white" stroke="#ddd" stroke-width="2"/>
+  
+  <!-- Boutons -->
+  <circle cx="110" cy="135" r="3" fill="#999"/>
+  <circle cx="110" cy="165" r="3" fill="#999"/>
+  <circle cx="110" cy="195" r="3" fill="#999"/>
+  <circle cx="110" cy="225" r="3" fill="#999"/>
+</svg>
