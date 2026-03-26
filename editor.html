@@ -2505,11 +2505,11 @@ function deleteSession(sessionId) {
 buildResultsTable();
 </script>
 
-<!-- POPPY MASCOTTE -->
-<div id="poppy-helper" style="position: fixed; bottom: 20px; left: 20px; z-index: 500; cursor: pointer;" onclick="openTutorial()">
+<!-- MASCOTTE HELPER - Dynamic based on selection -->
+<div id="mascotte-helper" style="position: fixed; bottom: 20px; left: 20px; z-index: 500; cursor: pointer;" onclick="openTutorial()">
   <div style="position: relative; width: 140px; height: 140px;">
-    <!-- Load real Poppy SVG -->
-    <img src="PoppyDoctor.svg" style="width: 100%; height: 100%; object-fit: contain;">
+    <!-- Load selected mascotte SVG -->
+    <img id="mascotte-image" src="PoppyDoctor.svg" style="width: 100%; height: 100%; object-fit: contain;">
     <!-- Question mark badge -->
     <div style="position: absolute; top: -10px; right: -10px; width: 50px; height: 50px; background: #2d6a4f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; font-weight: bold; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">?</div>
   </div>
@@ -2575,6 +2575,30 @@ document.getElementById('tutorial-modal').addEventListener('click', function(e) 
   if (e.target === this) {
     closeTutorial();
   }
+});
+
+// Load selected mascotte from localStorage
+function loadSelectedMascotte() {
+  const mascottes = [
+    { name: "Chien (Poppy)", file: "PoppyDoctor.svg" },
+    { name: "Cheval (Doctor)", file: "horse_mascot_doctor_v2.svg" }
+  ];
+  
+  const selectedIndex = parseInt(localStorage.getItem('selected_mascotte') || '0');
+  const mascotte = mascottes[selectedIndex];
+  
+  if (mascotte) {
+    const img = document.getElementById('mascotte-image');
+    if (img) {
+      img.src = mascotte.file;
+      console.log('🎨 Mascotte chargée:', mascotte.name);
+    }
+  }
+}
+
+// Load mascotte when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  loadSelectedMascotte();
 });
 </script>
 
